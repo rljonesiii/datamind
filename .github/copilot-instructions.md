@@ -8,7 +8,7 @@ This project implements a closed-loop agent system that mirrors a scientist's "t
 - **Meta-Controller**: Orchestrates plan → code → execute → evaluate → reflect cycles
 - **Planning Agent**: Breaks research questions into minimal subtasks using chain-of-thought
 - **Code-Generation Agent**: Generates focused Julia snippets with context awareness
-- **Execution Environment**: Isolated containers/notebooks (Docker, Ray actors, Pluto.jl)
+- **Execution Environment**: Julia native processing (Pluto.jl notebooks, REPL environments)
 - **Evaluation Agent**: Parses outputs, compares metrics, decides success/failure/retry
 - **Reflection Agent**: Updates knowledge graph and triggers next planning cycle
 
@@ -98,7 +98,7 @@ importance = feature_importance_analysis(X_train, y_train, X_test, y_test)
 - **Configuration**: YAML/TOML for agent parameters and optimization settings
 
 ### Integration Points
-- **Container Orchestration**: Docker for isolation, Kubernetes for scaling
+- **Julia Native Processing**: High-performance computing with minimal overhead
 - **Message Queues**: Async communication between agent services
 - **Artifact Storage**: Version-controlled outputs (models, plots, reports)
 - **Monitoring**: Execution metrics, cost tracking, success rates
