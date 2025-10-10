@@ -23,23 +23,13 @@ using StatsBase
 using Random
 using Distributions
 using GLM
+using StatsModels
 
-# Try to import StatsModels if available
-HAS_STATSMODELS = false
-try
-    using StatsModels
-    global HAS_STATSMODELS = true
-catch
-    @warn "StatsModels not available - using simplified formulas"
-end
-
-# Import plotting if available
-HAS_PLOTS = false
+# Optional plotting support
 try
     using Plots
-    global HAS_PLOTS = true
 catch
-    # Plots not available
+    # Plots not available - plotting features disabled
 end
 
 export 
