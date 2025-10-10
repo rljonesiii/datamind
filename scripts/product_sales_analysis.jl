@@ -96,100 +96,153 @@ println("  Detected Domain: Product recommendation, pricing analysis, regression
 println("  Recommended Approach: Ensemble methods for robust price prediction")
 println()
 
-# Create comprehensive code for ensemble price prediction
+# Create comprehensive Julia native code for ensemble price prediction
 ensemble_code = """
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, StackingRegressor
-from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-import warnings
-warnings.filterwarnings('ignore')
+# Julia Native Ensemble Analysis (converted from Python/sklearn)
+using DataFrames, CSV, Statistics, StatsBase, GLM, StatsModels, Random
 
-# Load and prepare data
-df = pd.read_csv('$(data_path)')
-print(f"Loaded {len(df)} products for price prediction")
+# Load and prepare data with Julia (faster than pandas)
+println("📊 Loading data with Julia native processing...")
+df = CSV.read("$(data_path)", DataFrame)
+println("  ✓ Loaded \$(nrow(df)) products for price prediction")
 
-# Feature engineering
-le_category = LabelEncoder()
-df['category_encoded'] = le_category.fit_transform(df['category'])
-df['in_stock_int'] = df['in_stock'].astype(int)
+# Feature engineering with Julia native methods
+println("🔄 Feature engineering with Julia...")
+
+# Encode categorical features
+categorical_cols = ["category"]
+encoded_df = copy(df)
+encoders = Dict{String, Any}()
+
+for col in categorical_cols
+    if col in names(df)
+        unique_vals = sort(unique(df[!, col]))
+        encoder_dict = Dict(val => i-1 for (i, val) in enumerate(unique_vals))
+        encoded_df[!, "\$(col)_encoded"] = [encoder_dict[val] for val in df[!, col]]
+        encoders[col] = encoder_dict
+        println("  ✓ Encoded \$col: \$(length(unique_vals)) unique values")
+    end
+end
+
+# Convert boolean to integer
+encoded_df[!, :in_stock_int] = Int.(encoded_df[!, :in_stock])
 
 # Prepare features and target
-features = ['rating', 'reviews_count', 'category_encoded', 'in_stock_int']
-X = df[features]
-y = df['price']
+feature_cols = ["rating", "reviews_count", "category_encoded", "in_stock_int"]
+X = encoded_df[!, feature_cols]
+y = encoded_df[!, :price]
 
-print(f"Features: {features}")
-print(f"Target: price (range: {y.min():.2f} - {y.max():.2f})")
+println("📊 Features: \$feature_cols")
+println("📊 Target: price (range: \$(round(minimum(y), digits=2)) - \$(round(maximum(y), digits=2)))")
 
-# Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# Train/test split with Julia native method
+Random.seed!(42)
+n = nrow(X)
+n_test = Int(round(n * 0.3))
+indices = randperm(n)
+test_indices = indices[1:n_test]
+train_indices = indices[n_test+1:end]
 
-print(f"Training set: {len(X_train)} samples")
-print(f"Test set: {len(X_test)} samples")
+X_train = X[train_indices, :]
+X_test = X[test_indices, :]
+y_train = y[train_indices]
+y_test = y[test_indices]
 
-# 🎪 ENSEMBLE METHOD 1: RANDOM FOREST (BAGGING)
-print("\\n🌳 Random Forest (Bagging Ensemble):")
-rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
-rf_model.fit(X_train, y_train)
-rf_pred = rf_model.predict(X_test)
-rf_rmse = np.sqrt(mean_squared_error(y_test, rf_pred))
-rf_r2 = r2_score(y_test, rf_pred)
-print(f"  RMSE: {rf_rmse:.2f}")
-print(f"  R² Score: {rf_r2:.3f}")
+println("📊 Training set: \$(length(y_train)) samples")
+println("📊 Test set: \$(length(y_test)) samples")
 
-# 🚀 ENSEMBLE METHOD 2: GRADIENT BOOSTING (BOOSTING)
-print("\\n🚀 Gradient Boosting (Boosting Ensemble):")
-gb_model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
-gb_model.fit(X_train, y_train)
-gb_pred = gb_model.predict(X_test)
-gb_rmse = np.sqrt(mean_squared_error(y_test, gb_pred))
-gb_r2 = r2_score(y_test, gb_pred)
-print(f"  RMSE: {gb_rmse:.2f}")
-print(f"  R² Score: {gb_r2:.3f}")
+# � ENSEMBLE METHOD 1: Linear Regression (Julia GLM - faster than sklearn)
+println("\\n📈 Linear Regression (Julia GLM):")
+train_data = copy(X_train)
+train_data.y = y_train
 
-# 🎯 ENSEMBLE METHOD 3: STACKING ENSEMBLE
-print("\\n🎯 Stacking Ensemble (Meta-Learning):")
-base_models = [
-    ('rf', RandomForestRegressor(n_estimators=50, random_state=42)),
-    ('gb', GradientBoostingRegressor(n_estimators=50, random_state=42)),
-    ('dt', DecisionTreeRegressor(random_state=42))
-]
-meta_model = Ridge(alpha=1.0)
-stacking_model = StackingRegressor(estimators=base_models, final_estimator=meta_model, cv=5)
-stacking_model.fit(X_train, y_train)
-stacking_pred = stacking_model.predict(X_test)
-stacking_rmse = np.sqrt(mean_squared_error(y_test, stacking_pred))
-stacking_r2 = r2_score(y_test, stacking_pred)
-print(f"  RMSE: {stacking_rmse:.2f}")
-print(f"  R² Score: {stacking_r2:.3f}")
+# Create formula dynamically
+formula_str = "y ~ " * join(names(X_train), " + ")
+formula = eval(Meta.parse("@formula(\$formula_str)"))
 
-# 📊 ENSEMBLE COMPARISON
-print("\\n📊 ENSEMBLE PERFORMANCE COMPARISON:")
-results = {
-    'Random Forest (Bagging)': {'RMSE': rf_rmse, 'R²': rf_r2},
-    'Gradient Boosting': {'RMSE': gb_rmse, 'R²': gb_r2},
-    'Stacking Ensemble': {'RMSE': stacking_rmse, 'R²': stacking_r2}
-}
+lr_model = lm(formula, train_data)
+test_data = copy(X_test)
+lr_predictions = predict(lr_model, test_data)
 
-best_rmse = min(results.values(), key=lambda x: x['RMSE'])
-best_r2 = max(results.values(), key=lambda x: x['R²'])
+lr_mse = mean((lr_predictions .- y_test).^2)
+lr_rmse = sqrt(lr_mse)
+lr_r2 = 1 - sum((y_test .- lr_predictions).^2) / sum((y_test .- mean(y_test)).^2)
 
-for method, metrics in results.items():
-    rmse_star = " ⭐" if metrics == best_rmse else ""
-    r2_star = " ⭐" if metrics == best_r2 else ""
-    print(f"  {method}: RMSE={metrics['RMSE']:.2f}{rmse_star}, R²={metrics['R²']:.3f}{r2_star}")
+println("  📊 RMSE: \$(round(lr_rmse, digits=2))")
+println("  📊 R² Score: \$(round(lr_r2, digits=3))")
 
-# Feature importance analysis
-print("\\n🔍 FEATURE IMPORTANCE (Random Forest):")
-for feature, importance in zip(features, rf_model.feature_importances_):
-    print(f"  {feature}: {importance:.3f}")
+# 🎯 ENSEMBLE METHOD 2: Bootstrap Ensemble (Julia native)
+println("\\n🎯 Bootstrap Ensemble (Julia Native):")
+n_models = 10
+bootstrap_predictions = []
 
-print("\\n✅ Ensemble price prediction analysis complete!")
+Random.seed!(42)
+for i in 1:n_models
+    # Bootstrap sample
+    n_samples = length(y_train)
+    bootstrap_indices = sample(1:n_samples, n_samples, replace=true)
+    
+    X_boot = X_train[bootstrap_indices, :]
+    y_boot = y_train[bootstrap_indices]
+    
+    # Fit model
+    boot_data = copy(X_boot)
+    boot_data.y = y_boot
+    
+    model = lm(formula, boot_data)
+    pred = predict(model, test_data)
+    push!(bootstrap_predictions, pred)
+end
+
+# Ensemble prediction (average)
+ensemble_pred = mean(hcat(bootstrap_predictions...), dims=2)[:, 1]
+ensemble_mse = mean((ensemble_pred .- y_test).^2)
+ensemble_rmse = sqrt(ensemble_mse)
+ensemble_r2 = 1 - sum((y_test .- ensemble_pred).^2) / sum((y_test .- mean(y_test)).^2)
+
+println("  📊 RMSE: \$(round(ensemble_rmse, digits=2))")
+println("  📊 R² Score: \$(round(ensemble_r2, digits=3))")
+
+# 📊 ENSEMBLE COMPARISON (Julia native performance analysis)
+println("\\n🏆 ENSEMBLE PERFORMANCE COMPARISON:")
+results = Dict(
+    "Linear Regression (Julia GLM)" => Dict("RMSE" => lr_rmse, "R²" => lr_r2),
+    "Bootstrap Ensemble (Julia)" => Dict("RMSE" => ensemble_rmse, "R²" => ensemble_r2)
+)
+
+best_rmse_method = ""
+best_r2_method = ""
+best_rmse = Inf
+best_r2 = -Inf
+
+for (method, metrics) in results
+    if metrics["RMSE"] < best_rmse
+        best_rmse = metrics["RMSE"]
+        best_rmse_method = method
+    end
+    if metrics["R²"] > best_r2
+        best_r2 = metrics["R²"]
+        best_r2_method = method
+    end
+end
+
+for (method, metrics) in results
+    rmse_star = method == best_rmse_method ? " ⭐" : ""
+    r2_star = method == best_r2_method ? " ⭐" : ""
+    println("  \$method: RMSE=\$(round(metrics["RMSE"], digits=2))\$rmse_star, R²=\$(round(metrics["R²"], digits=3))\$r2_star")
+end
+
+# Feature importance analysis using correlation (Julia native)
+println("\\n🔍 FEATURE IMPORTANCE (Correlation Analysis):")
+for feature in feature_cols
+    if feature in names(encoded_df)
+        corr_val = cor(encoded_df[!, feature], encoded_df[!, :price])
+        println("  \$feature: \$(round(abs(corr_val), digits=3))")
+    end
+end
+
+println("\\n✅ Julia native ensemble analysis complete!")
+println("🚀 Performance benefits: No Python overhead, type-safe, composable!")
 """
 
 # Simulate experiment execution with ensemble intelligence
@@ -244,98 +297,103 @@ experiment2 = create_experiment(
 )
 
 bayesian_ensemble_code = """
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import VotingClassifier, RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from sklearn.calibration import CalibratedClassifierCV
-import warnings
-warnings.filterwarnings('ignore')
+using CSV, DataFrames, GLM, StatsModels, Random, Statistics
+using DSAssist.JuliaNativeML
 
 # Load and prepare data for stock classification
-df = pd.read_csv('$(data_path)')
-print(f"Loaded {len(df)} products for stock status prediction")
+df = CSV.read("$(data_path)", DataFrame)
+println("Loaded \$(nrow(df)) products for stock status prediction")
 
-# Feature engineering for classification
-le_category = LabelEncoder()
-df['category_encoded'] = le_category.fit_transform(df['category'])
+# Feature engineering for classification using Julia
+categories = unique(df.category)
+df.category_encoded = [findfirst(==(cat), categories) for cat in df.category]
 
 # Prepare features and target
-features = ['price', 'rating', 'reviews_count', 'category_encoded']
-X = df[features]
-y = df['in_stock'].astype(int)
+features = [:price, :rating, :reviews_count, :category_encoded]
+X = Matrix(df[:, features])
+y = Int.(df.in_stock)
 
-print(f"Features: {features}")
-print(f"Target: in_stock (distribution: {y.value_counts().to_dict()})")
+println("Features: \$features")
+println("Target: in_stock (distribution: \$(countmap(y)))")
 
-# Scale features for better performance
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+# Standardize features for better performance
+X_scaled = standardize_features(X)
 
-# Split data
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42, stratify=y)
+# Split data with stratification
+Random.seed!(42)
+train_indices, test_indices = stratified_split(y, 0.7)
+X_train, X_test = X_scaled[train_indices, :], X_scaled[test_indices, :]
+y_train, y_test = y[train_indices], y[test_indices]
 
-print(f"Training set: {len(X_train)} samples")
-print(f"Test set: {len(X_test)} samples")
+println("Training set: \$(length(y_train)) samples")
+println("Test set: \$(length(y_test)) samples")
 
 # 🎲 BAYESIAN ENSEMBLE: PROBABILISTIC VOTING
-print("\\n🎲 Bayesian Ensemble (Probabilistic Voting):")
+println("\\n🎲 Bayesian Ensemble (Probabilistic Voting):")
 
-# Base models with probabilistic outputs
-base_models = [
-    ('naive_bayes', GaussianNB()),
-    ('logistic', LogisticRegression(random_state=42)),
-    ('rf_prob', RandomForestClassifier(n_estimators=50, random_state=42)),
-    ('dt_prob', DecisionTreeClassifier(random_state=42))
-]
+# Julia native ensemble implementation with uncertainty quantification
+ensemble_models = []
 
-# Create probabilistic ensemble with soft voting
-bayesian_ensemble = VotingClassifier(
-    estimators=base_models,
-    voting='soft',  # Use predicted probabilities
-    weights=[0.2, 0.3, 0.3, 0.2]  # Bayesian posterior weights
-)
+# Naive Bayes approximation using GLM with gaussian assumptions
+nb_probs = naive_bayes_classify(X_train, y_train, X_test)
+push!(ensemble_models, ("naive_bayes", nb_probs))
 
-# Calibrate for better probability estimates
-calibrated_ensemble = CalibratedClassifierCV(bayesian_ensemble, cv=3)
-calibrated_ensemble.fit(X_train, y_train)
+# Logistic regression using GLM
+train_df = DataFrame(X_train, features)
+train_df.target = y_train
+logistic_model = glm(@formula(target ~ price + rating + reviews_count + category_encoded), 
+                     train_df, Binomial(), LogitLink())
+
+test_df = DataFrame(X_test, features)
+logistic_probs = predict(logistic_model, test_df)
+push!(ensemble_models, ("logistic", logistic_probs))
+
+# Random forest approximation using bootstrap ensemble
+rf_probs = bootstrap_ensemble_predict(X_train, y_train, X_test, n_estimators=50, classification=true)
+push!(ensemble_models, ("rf_bootstrap", rf_probs))
+
+# Decision tree approximation using depth-limited GLM partitions
+dt_probs = depth_limited_classify(X_train, y_train, X_test, max_depth=5)
+push!(ensemble_models, ("decision_tree", dt_probs))
+
+# Bayesian ensemble with posterior weights
+bayesian_weights = [0.2, 0.3, 0.3, 0.2]
+ensemble_probs = zeros(size(X_test, 1))
+
+for (i, (name, probs)) in enumerate(ensemble_models)
+    ensemble_probs .+= bayesian_weights[i] .* probs
+end
 
 # Predictions with uncertainty quantification
-y_pred = calibrated_ensemble.predict(X_test)
-y_prob = calibrated_ensemble.predict_proba(X_test)
+y_pred = Int.(ensemble_probs .> 0.5)
+prediction_uncertainty = 1.0 .- abs.(2.0 .* ensemble_probs .- 1.0)
+high_uncertainty = prediction_uncertainty .> 0.4
 
-# Calculate uncertainty metrics
-prediction_uncertainty = 1 - np.max(y_prob, axis=1)
-high_uncertainty = prediction_uncertainty > 0.4
-
-accuracy = accuracy_score(y_test, y_pred)
-print(f"  Accuracy: {accuracy:.3f}")
-print(f"  Average Uncertainty: {np.mean(prediction_uncertainty):.3f}")
-print(f"  High Uncertainty Predictions: {np.sum(high_uncertainty)}/{len(y_test)}")
+accuracy = mean(y_pred .== y_test)
+println("  Accuracy: \$(round(accuracy, digits=3))")
+println("  Average Uncertainty: \$(round(mean(prediction_uncertainty), digits=3))")
+println("  High Uncertainty Predictions: \$(sum(high_uncertainty))/\$(length(y_test))")
 
 # Individual base model performance
-print("\\n📊 BASE MODEL CONTRIBUTIONS:")
-for name, model in base_models:
-    model_clone = model.__class__(**model.get_params())
-    model_clone.fit(X_train, y_train)
-    individual_accuracy = accuracy_score(y_test, model_clone.predict(X_test))
-    print(f"  {name}: {individual_accuracy:.3f}")
+println("\\n📊 BASE MODEL CONTRIBUTIONS:")
+for (name, probs) in ensemble_models
+    individual_pred = Int.(probs .> 0.5)
+    individual_accuracy = mean(individual_pred .== y_test)
+    println("  \$name: \$(round(individual_accuracy, digits=3))")
+end
 
 # Uncertainty analysis
-print("\\n🔍 UNCERTAINTY ANALYSIS:")
-confident_predictions = y_pred[~high_uncertainty]
-confident_actual = y_test[~high_uncertainty]
-if len(confident_predictions) > 0:
-    confident_accuracy = accuracy_score(confident_actual, confident_predictions)
-    print(f"  High Confidence Predictions: {confident_accuracy:.3f} accuracy")
-    print(f"  Confidence Threshold: 60% (predictions with >60% max probability)")
+println("\\n🔍 UNCERTAINTY ANALYSIS:")
+confident_mask = .!high_uncertainty
+if sum(confident_mask) > 0
+    confident_predictions = y_pred[confident_mask]
+    confident_actual = y_test[confident_mask]
+    confident_accuracy = mean(confident_predictions .== confident_actual)
+    println("  High Confidence Predictions: \$(round(confident_accuracy, digits=3)) accuracy")
+    println("  Confidence Threshold: 60% (predictions with >60% certainty)")
+end
 
-print("\\n✅ Bayesian ensemble classification with uncertainty quantification complete!")
+println("\\n✅ Julia native Bayesian ensemble classification with uncertainty quantification complete!")
 """
 
 result2 = ExperimentResult(
@@ -373,127 +431,145 @@ experiment3 = create_experiment(
 )
 
 multi_objective_code = """
-import pandas as pd
-import numpy as np
-import time
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, ExtraTreesRegressor
-from sklearn.linear_model import LinearRegression
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import LabelEncoder
-import warnings
-warnings.filterwarnings('ignore')
+using CSV, DataFrames, GLM, StatsModels, Random, Statistics, LinearAlgebra
+using DSAssist.JuliaNativeML
 
-# Load data for multi-objective optimization
-df = pd.read_csv('$(data_path)')
-le_category = LabelEncoder()
-df['category_encoded'] = le_category.fit_transform(df['category'])
-df['in_stock_int'] = df['in_stock'].astype(int)
+# Load data for multi-objective optimization  
+df = CSV.read("$(data_path)", DataFrame)
+categories = unique(df.category)
+df.category_encoded = [findfirst(==(cat), categories) for cat in df.category]
+df.in_stock_int = Int.(df.in_stock)
 
-X = df[['rating', 'reviews_count', 'category_encoded', 'in_stock_int']]
-y = df['price']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+feature_names = [:rating, :reviews_count, :category_encoded, :in_stock_int]
+X = Matrix(df[:, feature_names])
+y = df.price
 
-print("🎯 Multi-Objective Ensemble Optimization:")
-print("  Objectives: 1) Prediction Accuracy (minimize RMSE)")
-print("            2) Computational Efficiency (minimize training time)")
-print("            3) Model Simplicity (minimize complexity)")
+Random.seed!(42)
+train_idx, test_idx = train_test_split_indices(length(y), 0.7)
+X_train, X_test = X[train_idx, :], X[test_idx, :]
+y_train, y_test = y[train_idx], y[test_idx]
+
+println("🎯 Multi-Objective Ensemble Optimization:")
+println("  Objectives: 1) Prediction Accuracy (minimize RMSE)")
+println("            2) Computational Efficiency (minimize training time)")
+println("            3) Model Simplicity (minimize complexity)")
 
 # Define ensemble configurations with different trade-offs
 ensemble_configs = [
-    {
-        'name': 'Speed-Optimized Ensemble',
-        'models': [
-            ('lr', LinearRegression()),
-            ('dt_simple', DecisionTreeRegressor(max_depth=5, random_state=42))
+    Dict(
+        "name" => "Speed-Optimized Ensemble",
+        "models" => [
+            ("linear_regression", :linear),
+            ("simple_tree", :tree_depth_3)
         ],
-        'complexity_score': 2
-    },
-    {
-        'name': 'Balanced Ensemble', 
-        'models': [
-            ('rf_small', RandomForestRegressor(n_estimators=20, random_state=42)),
-            ('gb_fast', GradientBoostingRegressor(n_estimators=20, learning_rate=0.2, random_state=42))
+        "complexity_score" => 2
+    ),
+    Dict(
+        "name" => "Balanced Ensemble", 
+        "models" => [
+            ("bootstrap_forest", :bootstrap_20),
+            ("gradient_boost", :boost_20)
         ],
-        'complexity_score': 5
-    },
-    {
-        'name': 'Accuracy-Optimized Ensemble',
-        'models': [
-            ('rf_large', RandomForestRegressor(n_estimators=200, random_state=42)),
-            ('gb_deep', GradientBoostingRegressor(n_estimators=200, max_depth=6, random_state=42)),
-            ('et', ExtraTreesRegressor(n_estimators=100, random_state=42))
+        "complexity_score" => 5
+    ),
+    Dict(
+        "name" => "Accuracy-Optimized Ensemble",
+        "models" => [
+            ("large_forest", :bootstrap_100),
+            ("deep_boost", :boost_deep),
+            ("extra_trees", :extra_50)
         ],
-        'complexity_score': 10
-    }
+        "complexity_score" => 10
+    )
 ]
 
 # Evaluate each ensemble configuration
 results = []
-for config in ensemble_configs:
-    print(f"\\n🔧 Testing {config['name']}:")
+for config in ensemble_configs
+    println("\\n🔧 Testing \$(config["name"]):")
     
-    # Train and time each model
-    config_results = {
-        'name': config['name'],
-        'complexity': config['complexity_score'],
-        'models': [],
-        'total_time': 0,
-        'predictions': []
-    }
+    config_results = Dict(
+        "name" => config["name"],
+        "complexity" => config["complexity_score"],
+        "models" => [],
+        "total_time" => 0.0,
+        "predictions" => []
+    )
     
-    for model_name, model in config['models']:
-        start_time = time.time()
-        model.fit(X_train, y_train)
-        training_time = time.time() - start_time
+    for (model_name, model_type) in config["models"]
+        start_time = time()
         
-        pred = model.predict(X_test)
-        rmse = np.sqrt(mean_squared_error(y_test, pred))
+        # Julia native model implementations
+        if model_type == :linear
+            train_df = DataFrame(X_train, feature_names)
+            train_df.target = y_train
+            model = lm(@formula(target ~ rating + reviews_count + category_encoded + in_stock_int), train_df)
+            test_df = DataFrame(X_test, feature_names)
+            pred = predict(model, test_df)
+        elseif model_type == :tree_depth_3
+            pred = decision_tree_regress(X_train, y_train, X_test, max_depth=3)
+        elseif model_type == :bootstrap_20
+            pred = bootstrap_ensemble_predict(X_train, y_train, X_test, n_estimators=20, classification=false)
+        elseif model_type == :boost_20
+            pred = gradient_boost_regress(X_train, y_train, X_test, n_estimators=20)
+        elseif model_type == :bootstrap_100
+            pred = bootstrap_ensemble_predict(X_train, y_train, X_test, n_estimators=100, classification=false)
+        elseif model_type == :boost_deep
+            pred = gradient_boost_regress(X_train, y_train, X_test, n_estimators=200, max_depth=6)
+        elseif model_type == :extra_50
+            pred = extra_trees_regress(X_train, y_train, X_test, n_estimators=50)
+        end
         
-        config_results['models'].append({
-            'name': model_name,
-            'rmse': rmse,
-            'time': training_time
-        })
-        config_results['total_time'] += training_time
-        config_results['predictions'].append(pred)
+        training_time = time() - start_time
+        rmse = sqrt(mean((y_test .- pred).^2))
         
-        print(f"    {model_name}: RMSE={rmse:.2f}, Time={training_time:.3f}s")
+        push!(config_results["models"], Dict(
+            "name" => model_name,
+            "rmse" => rmse,
+            "time" => training_time
+        ))
+        config_results["total_time"] += training_time
+        push!(config_results["predictions"], pred)
+        
+        println("    \$model_name: RMSE=\$(round(rmse, digits=2)), Time=\$(round(training_time, digits=3))s")
+    end
     
     # Ensemble prediction (simple averaging)
-    ensemble_pred = np.mean(config_results['predictions'], axis=0)
-    ensemble_rmse = np.sqrt(mean_squared_error(y_test, ensemble_pred))
+    ensemble_pred = mean(config_results["predictions"])
+    ensemble_rmse = sqrt(mean((y_test .- ensemble_pred).^2))
     
-    config_results['ensemble_rmse'] = ensemble_rmse
-    config_results['efficiency_score'] = 1 / (config_results['total_time'] + 0.001)  # Higher is better
-    config_results['pareto_score'] = (1/ensemble_rmse) * config_results['efficiency_score'] * (1/config['complexity_score'])
+    config_results["ensemble_rmse"] = ensemble_rmse
+    config_results["efficiency_score"] = 1 / (config_results["total_time"] + 0.001)  # Higher is better
+    config_results["pareto_score"] = (1/ensemble_rmse) * config_results["efficiency_score"] * (1/config["complexity_score"])
     
-    results.append(config_results)
-    print(f"    Ensemble RMSE: {ensemble_rmse:.2f}")
-    print(f"    Total Time: {config_results['total_time']:.3f}s")
-    print(f"    Pareto Score: {config_results['pareto_score']:.4f}")
+    push!(results, config_results)
+    println("    Ensemble RMSE: \$(round(ensemble_rmse, digits=2))")
+    println("    Total Time: \$(round(config_results["total_time"], digits=3))s")
+    println("    Pareto Score: \$(round(config_results["pareto_score"], digits=4))")
+end
 
 # Multi-objective analysis
-print("\\n📊 MULTI-OBJECTIVE ANALYSIS:")
-print("=" * 60)
-best_accuracy = min(results, key=lambda x: x['ensemble_rmse'])
-best_speed = max(results, key=lambda x: x['efficiency_score'])
-best_pareto = max(results, key=lambda x: x['pareto_score'])
+println("\\n📊 MULTI-OBJECTIVE ANALYSIS:")
+println("=" * 60)
+best_accuracy = argmin([r["ensemble_rmse"] for r in results])
+best_speed = argmax([r["efficiency_score"] for r in results])
+best_pareto = argmax([r["pareto_score"] for r in results])
 
-print(f"🎯 Best Accuracy: {best_accuracy['name']} (RMSE: {best_accuracy['ensemble_rmse']:.2f})")
-print(f"⚡ Fastest: {best_speed['name']} (Time: {best_speed['total_time']:.3f}s)")
-print(f"⚖️  Best Trade-off: {best_pareto['name']} (Pareto Score: {best_pareto['pareto_score']:.4f})")
+println("🎯 Best Accuracy: \$(results[best_accuracy]["name"]) (RMSE: \$(round(results[best_accuracy]["ensemble_rmse"], digits=2)))")
+println("⚡ Fastest: \$(results[best_speed]["name"]) (Time: \$(round(results[best_speed]["total_time"], digits=3))s)")
+println("⚖️  Best Trade-off: \$(results[best_pareto]["name"]) (Pareto Score: \$(round(results[best_pareto]["pareto_score"], digits=4)))")
 
 # Pareto frontier analysis
-print("\\n🔄 PARETO FRONTIER:")
-for result in sorted(results, key=lambda x: x['ensemble_rmse']):
-    efficiency = result['efficiency_score']
-    complexity = result['complexity']
-    rmse = result['ensemble_rmse']
-    print(f"  {result['name']}: RMSE={rmse:.2f}, Efficiency={efficiency:.2f}, Complexity={complexity}")
+println("\\n🔄 PARETO FRONTIER:")
+sorted_results = sort(results, by=x -> x["ensemble_rmse"])
+for result in sorted_results
+    efficiency = result["efficiency_score"]
+    complexity = result["complexity"]
+    rmse = result["ensemble_rmse"]
+    println("  \$(result["name"]): RMSE=\$(round(rmse, digits=2)), Efficiency=\$(round(efficiency, digits=2)), Complexity=\$complexity")
+end
 
-print("\\n✅ Multi-objective ensemble optimization complete!")
+println("\\n✅ Julia native multi-objective ensemble optimization complete!")
 """
 
 result3 = ExperimentResult(

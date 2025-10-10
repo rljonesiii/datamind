@@ -37,36 +37,125 @@ export
     load_and_prepare_data,
     encode_categorical_features,
     train_test_split_julia,
+    standardize_features,
+    validate_data_quality,
     
-    # Basic ML methods  
+    # Enhanced ML methods  
     linear_regression_analysis,
     logistic_regression_analysis,
     simple_ensemble_analysis,
+    robust_ensemble_analysis,
     
-    # Model evaluation
+    # Model evaluation & validation
     evaluate_regression_model,
     calculate_regression_metrics,
+    cross_validate_model,
+    bootstrap_confidence_intervals,
+    
+    # Optimization utilities
+    optimize_hyperparameters,
+    memory_efficient_processing,
     
     # Utilities
-    feature_correlation_analysis
+    feature_correlation_analysis,
+    detect_outliers,
+    feature_importance_analysis
 
 """
-Load and prepare data with Julia-native processing
+Load and prepare data with Julia-native processing and enhanced validation
 """
-function load_and_prepare_data(data_path::String)
+function load_and_prepare_data(data_path::String; validate::Bool=true)
     println("📊 Loading data with Julia native processing...")
     
-    # Load data using CSV.jl (faster than pandas)
-    df = CSV.read(data_path, DataFrame)
-    println("  ✓ Loaded $(nrow(df)) rows, $(ncol(df)) columns")
-    
-    return df
+    try
+        # Load data using CSV.jl (faster than pandas)
+        df = CSV.read(data_path, DataFrame)
+        println("  ✓ Loaded $(nrow(df)) rows, $(ncol(df)) columns")
+        
+        if validate
+            quality_report = validate_data_quality(df)
+            if !quality_report[:is_valid]
+                @warn "Data quality issues detected: $(quality_report[:issues])"
+            end
+        end
+        
+        return df
+    catch e
+        error("Failed to load data from $data_path: $(e)")
+    end
 end
 
 """
-Encode categorical features using Julia native methods
+Enhanced data quality validation
 """
-function encode_categorical_features(df::DataFrame, categorical_cols::Vector{String})
+function validate_data_quality(df::DataFrame)
+    issues = String[]
+    
+    # Check for empty dataframe
+    if nrow(df) == 0
+        push!(issues, "Empty DataFrame")
+        return Dict(:is_valid => false, :issues => issues)
+    end
+    
+    # Check for missing values
+    missing_cols = String[]
+    for col in names(df)
+        missing_count = count(ismissing, df[!, col])
+        if missing_count > 0
+            missing_pct = round(missing_count / nrow(df) * 100, digits=1)
+            push!(missing_cols, "$col ($missing_pct%)")
+            if missing_pct > 50
+                push!(issues, "High missing values in $col: $missing_pct%")
+            end
+        end
+    end
+    
+    # Check for duplicate rows
+    duplicate_count = nrow(df) - nrow(unique(df))
+    if duplicate_count > 0
+        duplicate_pct = round(duplicate_count / nrow(df) * 100, digits=1)
+        push!(issues, "Duplicate rows: $duplicate_count ($duplicate_pct%)")
+    end
+    
+    # Check for constant columns
+    constant_cols = String[]
+    for col in names(df)
+        if length(unique(skipmissing(df[!, col]))) <= 1
+            push!(constant_cols, col)
+            push!(issues, "Constant column: $col")
+        end
+    end
+    
+    is_valid = length(issues) == 0
+    
+    # Print quality report
+    if !isempty(missing_cols)
+        println("  ⚠️  Missing values: $(join(missing_cols, ", "))")
+    end
+    if !isempty(constant_cols)
+        println("  ⚠️  Constant columns: $(join(constant_cols, ", "))")
+    end
+    if duplicate_count > 0
+        println("  ⚠️  Duplicate rows: $duplicate_count")
+    end
+    if is_valid
+        println("  ✅ Data quality: Excellent")
+    end
+    
+    return Dict(
+        :is_valid => is_valid,
+        :issues => issues,
+        :missing_cols => missing_cols,
+        :constant_cols => constant_cols,
+        :duplicate_count => duplicate_count
+    )
+end
+
+"""
+Encode categorical features using Julia native methods with enhanced error handling
+"""
+function encode_categorical_features(df::DataFrame, categorical_cols::Vector{String}; 
+                                   handle_unknown::String="error")
     println("🔄 Encoding categorical features...")
     
     encoded_df = copy(df)
@@ -74,15 +163,51 @@ function encode_categorical_features(df::DataFrame, categorical_cols::Vector{Str
     
     for col in categorical_cols
         if col in names(df)
-            # Create label encoding
-            unique_vals = sort(unique(df[!, col]))
-            encoder_dict = Dict(val => i-1 for (i, val) in enumerate(unique_vals))
-            
-            # Apply encoding
-            encoded_df[!, "$(col)_encoded"] = [encoder_dict[val] for val in df[!, col]]
-            encoders[col] = encoder_dict
-            
-            println("  ✓ Encoded $col: $(length(unique_vals)) unique values")
+            try
+                # Create label encoding with robust handling
+                unique_vals = sort(unique(skipmissing(df[!, col])))
+                
+                if length(unique_vals) == 0
+                    @warn "Column $col has no non-missing values, skipping encoding"
+                    continue
+                end
+                
+                if length(unique_vals) > 1000
+                    @warn "Column $col has $(length(unique_vals)) unique values - consider different encoding strategy"
+                end
+                
+                encoder_dict = Dict(val => i-1 for (i, val) in enumerate(unique_vals))
+                
+                # Handle missing values
+                if any(ismissing, df[!, col])
+                    encoder_dict[missing] = -1
+                end
+                
+                # Apply encoding with error handling
+                encoded_values = similar(df[!, col], Union{Int, Missing})
+                for (i, val) in enumerate(df[!, col])
+                    if ismissing(val)
+                        encoded_values[i] = -1
+                    elseif haskey(encoder_dict, val)
+                        encoded_values[i] = encoder_dict[val]
+                    else
+                        if handle_unknown == "error"
+                            error("Unknown value '$val' in column $col")
+                        elseif handle_unknown == "ignore"
+                            encoded_values[i] = -999  # Special code for unknown
+                        end
+                    end
+                end
+                
+                encoded_df[!, "$(col)_encoded"] = encoded_values
+                encoders[col] = encoder_dict
+                
+                println("  ✓ Encoded $col: $(length(unique_vals)) unique values")
+            catch e
+                error("Failed to encode column $col: $(e)")
+            end
+        else
+            @warn "Column $col not found in DataFrame"
         end
     end
     
