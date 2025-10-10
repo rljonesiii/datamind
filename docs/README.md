@@ -3,6 +3,9 @@
 ## Table of Contents
 
 - [Agent Architecture](architecture.md) - System design and agent communication  
+- **Plotting & Visualization**:
+  - [Plotting Capabilities](plotting_capabilities.md) - Interactive plotting with Pluto.jl and visualization features
+  - [Julia ML Quick Reference](julia_ml_quick_reference.md) - ML operations and plotting reference
 - **Knowledge Graph**:
   - [Knowledge Graph Summary](knowledge_graph_summary.md) - Quick overview of why and how
   - [Knowledge Graph Usage](knowledge_graph_usage.md) - Comprehensive guide to learning and patterns

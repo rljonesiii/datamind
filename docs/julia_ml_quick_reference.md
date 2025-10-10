@@ -59,6 +59,39 @@ ensemble_results = simple_ensemble_analysis(X_train, y_train, X_test, y_test, n_
 df_chunk, summary = memory_efficient_processing("large_data.csv", chunk_size=1000)
 ```
 
+## 📊 Plotting & Visualization
+
+### Interactive Dashboards
+```julia
+# Launch Pluto interactive dashboard
+using Pluto
+Pluto.run(notebook="notebooks/credit_card_simple_dashboard.jl")
+
+# Features: risk analysis, customer segmentation, 3D plots
+```
+
+### Production Plotting
+```julia
+using Plots
+
+# Multiple backends for different use cases
+plotlyjs()  # Interactive charts
+gr()        # Fast rendering
+pythonplot() # matplotlib compatibility
+
+# Generate visualizations
+Plots.bar(categories, counts, title="Distribution Analysis")
+Plots.scatter(x, y, group=labels, title="Segmentation Analysis")
+```
+
+### Batch Visualization
+```bash
+# Generate comprehensive charts automatically
+julia scripts/credit_card_plotting_demo.jl
+
+# Creates: risk_distribution.png, value_analysis.png, etc.
+```
+
 ## 🎯 Performance Tips
 
 ### Memory Optimization
@@ -200,6 +233,8 @@ ci_results = bootstrap_confidence_intervals(X_train, y_train, X_test)
 
 ---
 
-**Quick Demo**: `julia --project=. scripts/enhanced_julia_ml_demo.jl`
-**Full Documentation**: `docs/julia_ml_optimization.md`
-**Performance Summary**: `julia --project=. scripts/final_optimization_summary.jl`
+**Quick Demo**: `julia --project=. scripts/enhanced_julia_ml_demo.jl`  
+**Full Documentation**: `docs/julia_ml_optimization.md`  
+**Performance Summary**: `julia --project=. scripts/final_optimization_summary.jl`  
+**Plotting Guide**: `docs/plotting_capabilities.md`  
+**Interactive Dashboard**: `julia -e 'using Pluto; Pluto.run(notebook="notebooks/credit_card_simple_dashboard.jl")'`
