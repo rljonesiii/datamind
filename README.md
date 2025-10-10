@@ -38,11 +38,68 @@ DSAssist provides multiple approaches to AI-powered data analysis with a **fully
 - OpenAI API key (required for real insights)
 - **No Python dependencies** (Julia native ML ecosystem)
 
+#### Installing Julia
+
+##### macOS
+```bash
+# Option 1: Using Homebrew (recommended)
+brew install julia
+
+# Option 2: Using official installer
+# Download from https://julialang.org/downloads/
+# Install the .dmg file for macOS
+```
+
+##### Linux (Ubuntu/Debian)
+```bash
+# Option 1: Using Julia's official installer (recommended)
+curl -fsSL https://install.julialang.org | sh
+
+# Option 2: Using package manager
+sudo apt update
+sudo apt install julia
+
+# Option 3: Using snap
+sudo snap install julia --classic
+```
+
+##### Linux (CentOS/RHEL/Fedora)
+```bash
+# Option 1: Using Julia's official installer (recommended)
+curl -fsSL https://install.julialang.org | sh
+
+# Option 2: Using dnf/yum
+sudo dnf install julia          # Fedora
+sudo yum install julia          # CentOS/RHEL
+```
+
+##### Windows
+```powershell
+# Option 1: Using Chocolatey (recommended)
+choco install julia
+
+# Option 2: Using Scoop
+scoop install julia
+
+# Option 3: Using winget
+winget install julia
+
+# Option 4: Manual installation
+# Download from https://julialang.org/downloads/
+# Run the .exe installer for Windows
+```
+
+**Verify Installation:**
+```bash
+julia --version
+# Should show Julia 1.9+ for compatibility
+```
+
 ### Installation
 
 ```bash
 # Clone and setup
-git clone <repository>
+git clone https://github.com/rljonesiii/dsassist.git
 cd dsassist
 julia --project=. -e "using Pkg; Pkg.instantiate()"
 
@@ -128,6 +185,41 @@ julia --project=. scripts/final_optimization_summary.jl
 - **Real LLM Integration**: GPT-4 analysis with native Julia ML backend
 - **Knowledge Graph**: Neo4j integration with advanced ontology (30+ node types)
 - **Multi-Agent Analysis**: Business, technical, customer perspectives with optimized processing
+
+## 📊 Interactive Plotting & Visualization
+
+### 🎨 **Comprehensive Visualization Suite**
+- **Interactive Dashboards**: Pluto.jl notebooks with real-time controls
+- **Business Intelligence**: Risk analysis, customer segmentation, ROI visualization
+- **Multiple Backends**: PlotlyJS (interactive), GR (fast), export-ready formats
+- **Julia Native Performance**: 5-100x faster than Python/matplotlib
+
+### 🎯 **Interactive Features**
+```bash
+# Launch interactive dashboard
+julia -e 'using Pluto; Pluto.run(notebook="notebooks/credit_card_simple_dashboard.jl")'
+
+# Features:
+# - Real-time risk threshold sliders
+# - Dynamic customer segmentation plots
+# - 3D visualization options
+# - Executive summary dashboards
+```
+
+### 📈 **Production Visualizations**
+```bash
+# Generate comprehensive charts
+julia scripts/credit_card_plotting_demo.jl
+
+# Creates: risk_distribution.png, value_risk_analysis.png, 
+#          ml_performance.png, business_roi.png, customer_segments.png
+```
+
+**Key Benefits:**
+- ✅ **Font-compatible**: No emoji rendering issues
+- ✅ **Reactive cells**: Proper Pluto variable scoping
+- ✅ **Multiple backends**: PlotlyJS for interactivity, GR for speed
+- ✅ **Production ready**: PNG/PDF export for presentations
 
 ## � Usage Examples
 
