@@ -29,7 +29,15 @@ println("🎯 Iterative Learning and Adaptive Experimentation")
 println("=" ^ 70)
 
 data_path = "data/cc_data.csv"
-use_real_api = get(ENV, "DSASSIST_USE_REAL_API", "false") == "true"
+use_real_api = get(ENV, "DSASSIST_USE_REAL_API", "true") == "true"
+
+if !use_real_api
+    println("⚠️  DEMO MODE: Set DSASSIST_USE_REAL_API=false for mock responses")
+    println("📊 Running simulated advanced agentic responses")
+else
+    println("🤖 REAL AGENTIC MODE: Using live LLM agents for advanced experiments")
+    println("🚀 Full AI-powered iterative experimentation")
+end
 
 # Advanced Experiment 1: Iterative Model Improvement
 println("\n🔄 ADVANCED EXPERIMENT 1: ITERATIVE MODEL REFINEMENT")

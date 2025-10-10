@@ -17,9 +17,8 @@ using Pkg
 Pkg.activate(".")
 
 # Load DSAssist components
-# Load enhanced workflow foundation
-include("enhanced_workflow_foundation.jl")
-using .EnhancedWorkflow
+include("../src/DSAssist.jl")
+using .DSAssist
 using .DSAssist.JuliaNativeML
 
 # Core plotting

@@ -147,41 +147,51 @@ function generate_mock_response(agent_name::String, prompt::String)
         ))
     elseif agent_name == "codegen_agent"
         # Check if we have CSV data context
-        if contains(prompt, "data_file") || contains(prompt, "CSV")
+        if contains(prompt, "data_file") || contains(prompt, "CSV") || contains(prompt, "credit_card") || contains(prompt, "cc_data")
             return """
             using CSV, DataFrames, Statistics
             
             # Load the CSV data
-            if isfile("data.csv")
+            if isfile("data/cc_data.csv")
+                df = CSV.read("data/cc_data.csv", DataFrame)
+            elseif isfile("data.csv")
                 df = CSV.read("data.csv", DataFrame)
             else
                 # Generate sample data for demonstration
                 df = DataFrame(
-                    feature_x = randn(100),
-                    feature_y = randn(100),
-                    outcome = randn(100)
+                    CUST_ID = 1:100,
+                    BALANCE = rand(100) * 5000,
+                    CREDIT_LIMIT = rand(100) * 10000 .+ 1000,
+                    PURCHASES = rand(100) * 3000,
+                    CASH_ADVANCE = rand(100) * 1000,
+                    PAYMENTS = rand(100) * 2000,
+                    MINIMUM_PAYMENTS = rand(100) * 500
                 )
             end
             
             # Basic data exploration
-            println("Data shape: ", size(df))
+            data_shape = size(df)
+            println("data_shape: ", data_shape)
+            println("Data shape: ", data_shape)
             println("Columns: ", names(df))
             
             # Calculate correlation between features
-            if "feature_x" in names(df) && "outcome" in names(df)
-                corr_coeff = cor(df.feature_x, df.outcome)
+            numeric_cols = [col for col in names(df) if eltype(df[!, col]) <: Number]
+            if length(numeric_cols) >= 2
+                corr_coeff = cor(df[!, numeric_cols[1]], df[!, numeric_cols[2]])
                 println("correlation_coeff: ", round(corr_coeff, digits=3))
             end
             
             # Basic statistics
             for col_name in names(df)
                 if eltype(df[!, col_name]) <: Number
-                    col_mean = mean(df[!, col_name])
+                    col_mean = mean(skipmissing(df[!, col_name]))
                     println("\$(col_name)_mean: ", round(col_mean, digits=3))
                 end
             end
             
             println("sample_size: ", nrow(df))
+            println("feature_count: ", ncol(df))
             """
         else
             return """
@@ -194,10 +204,16 @@ function generate_mock_response(agent_name::String, prompt::String)
                 outcome_y = randn(n)
             )
             
+            # Basic data exploration
+            data_shape = size(df)
+            println("data_shape: ", data_shape)
+            println("Data shape: ", data_shape)
+            
             # Calculate correlation
             corr_coeff = cor(df.feature_x, df.outcome_y)
             println("correlation_coeff: ", corr_coeff)
             println("sample_size: ", nrow(df))
+            println("feature_count: ", ncol(df))
             """
         end
     elseif agent_name == "evaluation_agent"

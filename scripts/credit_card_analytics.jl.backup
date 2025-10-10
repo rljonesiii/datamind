@@ -22,9 +22,8 @@ using Pkg
 Pkg.activate(".")
 
 # Load the optimized DSAssist system
-# Load enhanced workflow foundation
-include("enhanced_workflow_foundation.jl")
-using .EnhancedWorkflow
+include("../src/DSAssist.jl")
+using .DSAssist
 using .DSAssist.JuliaNativeML
 using DataFrames, CSV, Statistics, Random, GLM
 

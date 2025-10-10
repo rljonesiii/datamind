@@ -17,9 +17,8 @@ push!(LOAD_PATH, joinpath(@__DIR__, "..", "src"))
 
 using DataFrames
 
-# Load enhanced workflow foundation
-include("enhanced_workflow_foundation.jl")
-using .EnhancedWorkflow
+include("../src/DSAssist.jl")
+using .DSAssist
 
 function demo()
     println("🚀 Quick Julia ML Demo")

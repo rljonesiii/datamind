@@ -16,6 +16,7 @@ include("types.jl")
 include("data/loader.jl")
 include("utils/llm_client.jl")
 include("knowledge/graph.jl")
+include("knowledge/vector_db.jl")  # Add vector database support
 include("execution/sandbox.jl")
 include("evaluation/evaluator.jl")
 include("agents/planning_agent.jl")
@@ -50,6 +51,9 @@ export update_knowledge, query_insights, query_techniques_for_domain, query_code
        # Ensemble Intelligence
        query_ensemble_recommendations, extract_ensemble_intelligence, query_learning_intelligence,
        # Cognitive Intelligence  
-       create_cognitive_intelligence
+       create_cognitive_intelligence,
+       # Vector Database Intelligence
+       EnhancedKnowledgeGraph, initialize_vector_knowledge_graph, 
+       enhanced_query_insights, semantic_similarity_search, embed_research_question
 
 end # module DSAssist

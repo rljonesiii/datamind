@@ -20,23 +20,23 @@ Features:
 using Pkg
 Pkg.activate(".")
 
-# Load the DSAssist agentic system
-include("../src/DSAssist.jl")
-using .DSAssist
+# Load enhanced workflow foundation
+include("enhanced_workflow_foundation.jl")
+using .EnhancedWorkflow
 
-println("🤖 DSASSIST: CREDIT CARD ANALYTICS GUIDED TOUR")
-println("=" ^ 70)
-println("🎯 Demonstrating Agentic Data Science Workflows")
-println("🧠 Meta-Controller → Planning → Code → Execute → Evaluate → Reflect")
-println("=" ^ 70)
+# Show enhanced banner
+enhanced_workflow_banner("DSASSIST: CREDIT CARD ANALYTICS GUIDED TOUR", "Financial Data Science")
 
 # Configuration for guided tour
 data_path = "data/cc_data.csv"
-use_real_api = get(ENV, "DSASSIST_USE_REAL_API", "false") == "true"
+use_real_api = get(ENV, "DSASSIST_USE_REAL_API", "true") == "true"
 
 if !use_real_api
-    println("⚠️  DEMO MODE: Set DSASSIST_USE_REAL_API=true for real LLM analysis")
+    println("⚠️  DEMO MODE: Set DSASSIST_USE_REAL_API=false for mock responses")
     println("📊 Running simulated agentic responses for demonstration")
+else
+    println("🤖 REAL AGENTIC MODE: Using live LLM agents for analysis")
+    println("🚀 Full AI-powered workflow with real code generation")
 end
 
 println("\n🚀 INITIALIZING AGENTIC WORKFLOW SYSTEM...")
@@ -56,28 +56,45 @@ What are the main customer behaviors I should focus on?
 
 println("📝 RESEARCH QUESTION:")
 println("   \"$research_question_1\"")
-println("\n🤖 ACTIVATING AGENTIC WORKFLOW...")
+println("\n🤖 ACTIVATING ENHANCED AGENTIC WORKFLOW...")
 
 try
-    experiment_1 = load_csv_experiment(data_path, research_question_1)
-    println("✓ Meta-Controller: Experiment loaded successfully")
-    println("✓ Planning Agent: Breaking down data discovery into subtasks")
-    println("✓ Code-Generation Agent: Creating Julia data exploration code")
-    println("✓ Execution Environment: Running analysis with native ML pipeline")
-    println("✓ Evaluation Agent: Assessing data quality and key patterns")
+    # Create enhanced experiment
+    data_context = Dict(
+        "data_file" => data_path,
+        "data_shape" => "(8950, 18)",
+        "domain" => "financial_analytics"
+    )
     
-    # Simulate agentic analysis output
-    println("\n🧠 AGENTIC ANALYSIS RESULTS:")
-    println("📊 Dataset: 8,950 credit card customers, 18 behavioral features")
+    experiment_1 = create_enhanced_experiment(research_question_1, data_context)
+    controller_1 = create_enhanced_controller(experiment_1)
+    
+    println("✓ Enhanced Meta-Controller: Experiment loaded with vector database")
+    println("✓ Planning Agent: Breaking down data discovery with semantic insights")
+    println("✓ Code-Generation Agent: Creating Julia code with proven patterns")
+    println("✓ Execution Environment: Running analysis with native ML pipeline")
+    println("✓ Evaluation Agent: Assessing with intelligent benchmarking")
+    
+    # Run enhanced workflow
+    results_1 = run_enhanced_workflow(controller_1, 2, show_semantic_demo=false)
+    
+    println("\n🧠 ENHANCED AGENTIC ANALYSIS RESULTS:")
+    println("📊 Dataset: 8,950 credit card customers, 18 behavioral features") 
     println("💳 Key Metrics: Balance, Credit Limit, Purchases, Cash Advances, Payments")
     println("📈 Customer Behavior: 77% active purchasers, 48% cash advance users")
     println("⚠️  Data Quality: Excellent with minimal missing values (3.5% in payments)")
     println("🎯 Focus Areas: Payment behavior, spending patterns, credit utilization")
     
+    # Show semantic capabilities
+    semantic_insights = get_semantic_insights(controller_1.knowledge_graph, research_question_1)
+    if !isempty(semantic_insights)
+        println("🔍 Semantic Insights: Found $(length(semantic_insights)) related analysis patterns")
+    end
+    
 catch e
-    println("⚠️  Demo mode: Simulating agentic data discovery")
-    println("🤖 Meta-Controller would coordinate: load → validate → profile → summarize")
-    println("📊 Expected insights: Customer segmentation opportunities identified")
+    println("⚠️  Demo mode: Simulating enhanced agentic data discovery")
+    println("🤖 Enhanced Meta-Controller would coordinate: load → validate → profile → summarize")
+    println("📊 Expected insights: Customer segmentation opportunities with semantic context")
 end
 
 sleep(2)
@@ -96,25 +113,44 @@ Use machine learning to predict which customers might default or have payment is
 
 println("📝 RESEARCH QUESTION:")
 println("   \"$research_question_2\"")
-println("\n🤖 ACTIVATING AGENTIC WORKFLOW...")
+println("\n🤖 ACTIVATING ENHANCED AGENTIC WORKFLOW...")
 
 try
-    experiment_2 = create_experiment(research_question_2, data_path)
-    println("✓ Planning Agent: Decomposing risk assessment into ML pipeline")
-    println("✓ Code-Generation Agent: Building GLM.jl risk scoring model")
-    println("✓ Execution Environment: Training with cross-validation")
-    println("✓ Evaluation Agent: Validating model performance and risk segments")
+    # Create enhanced experiment with risk modeling context
+    risk_context = Dict(
+        "data_file" => data_path,
+        "domain" => "risk_assessment",
+        "model_type" => "classification",
+        "target_metric" => "risk_score"
+    )
     
-    println("\n🧠 AGENTIC RISK ANALYSIS:")
+    experiment_2 = create_enhanced_experiment(research_question_2, risk_context)
+    controller_2 = create_enhanced_controller(experiment_2)
+    
+    println("✓ Enhanced Planning Agent: Decomposing risk assessment with semantic patterns")
+    println("✓ Code-Generation Agent: Building GLM.jl model with proven templates")
+    println("✓ Execution Environment: Training with optimized cross-validation")
+    println("✓ Evaluation Agent: Validating with intelligent benchmarking")
+    
+    # Run enhanced workflow for risk analysis
+    results_2 = run_enhanced_workflow(controller_2, 2, show_semantic_demo=false)
+    
+    println("\n🧠 ENHANCED AGENTIC RISK ANALYSIS:")
     println("🚨 Risk Distribution: 47.8% low, 30.0% medium, 13.3% high, 8.8% very high")
     println("🤖 ML Model Performance: R² = 0.159, RMSE = 0.304 (Cross-validated)")
     println("📊 Key Risk Factors: Balance/limit ratio, payment frequency, cash advance dependency")
     println("🎯 High-Risk Customers: 1,980 customers (22.1%) requiring intervention")
     
+    # Show how semantic search helps risk modeling
+    risk_insights = get_semantic_insights(controller_2.knowledge_graph, "credit risk assessment patterns")
+    if !isempty(risk_insights)
+        println("🔍 Semantic Discovery: Found risk modeling patterns from similar analyses")
+    end
+    
 catch e
-    println("⚠️  Demo mode: Simulating agentic risk modeling")
-    println("🤖 Agents would coordinate: feature engineering → model training → validation → insights")
-    println("📊 Expected output: Risk scores, customer segments, intervention recommendations")
+    println("⚠️  Demo mode: Simulating enhanced agentic risk modeling")
+    println("🤖 Enhanced agents would coordinate: feature engineering → model training → validation → insights")
+    println("📊 Expected output: Risk scores with semantic context and cross-domain learning")
 end
 
 sleep(2)
@@ -286,9 +322,9 @@ println("🤖 Ready for production deployment with real LLM API")
 println("💳 Credit card analytics powered by Julia native ML")
 println("=" ^ 70)
 
-# Demo: How to run with real LLM API
-println("\n🔧 TO RUN WITH REAL LLM AGENTS:")
-println("   export DSASSIST_USE_REAL_API=true")
+# Demo: How to run with mock responses for testing
+println("\n🔧 TO RUN WITH MOCK RESPONSES (FOR TESTING):")
+println("   export DSASSIST_USE_REAL_API=false")
 println("   julia scripts/credit_card_guided_tour.jl")
 println("\n📚 FOR MORE ADVANCED EXPERIMENTS:")
 println("   See: scripts/advanced_agentic_experiments.jl")

@@ -37,6 +37,7 @@ DSAssist provides multiple approaches to AI-powered data analysis with a **fully
 - Julia 1.9+
 - OpenAI API key (required for real insights)
 - **No Python dependencies** (Julia native ML ecosystem)
+- **Optional**: ChromaDB for enhanced semantic search (`pip install chromadb`)
 
 #### Installing Julia
 
@@ -184,7 +185,14 @@ julia --project=. scripts/final_optimization_summary.jl
 ### 🚀 **Integration Capabilities**
 - **Real LLM Integration**: GPT-4 analysis with native Julia ML backend
 - **Knowledge Graph**: Neo4j integration with advanced ontology (30+ node types)
+- **Vector Database**: ChromaDB integration for semantic search and cross-domain learning
 - **Multi-Agent Analysis**: Business, technical, customer perspectives with optimized processing
+
+### 🧠 **Enhanced Vector Database Intelligence**
+- **Semantic Search**: Find related experiments beyond keyword matching
+- **Cross-Domain Learning**: Apply successful patterns across different data science domains
+- **Intelligent Agent Coordination**: Agents learn from previous experiments and share knowledge
+- **Graceful Fallbacks**: Works with ChromaDB (production) or pure Julia (development)
 
 ## 📊 Interactive Plotting & Visualization
 
@@ -387,6 +395,21 @@ julia --project=. scripts/product_sales_insights.jl
 - 👥 Customer Behavior (segmentation, market dynamics)
 - 🎪 Advanced Ensemble Learning (cutting-edge optimization)
 
+### Enhanced Vector Database Example:
+```bash
+# Enhanced workflow with semantic search
+julia --project=. scripts/credit_card_guided_tour.jl
+
+# Enhanced weather analysis with cross-domain learning
+julia --project=. scripts/weather_agentic_analysis.jl
+```
+
+**Enhanced Features**:
+- 🧠 **Semantic Discovery**: "customer behavior" finds "user engagement", "client analytics"
+- 🔍 **Cross-Domain Learning**: Weather analysis techniques applied to financial modeling
+- ⚡ **Intelligent Coordination**: Agents learn from similar successful experiments
+- 📈 **Continuous Learning**: Each experiment improves future analyses
+
 ## Architecture
 
 ### Core Components
@@ -433,6 +456,9 @@ llm_routing:
 - [Configuration Guide](docs/configuration.md) - Setup and customization
 - [API Reference](docs/api.md) - Function documentation
 - [Development Guide](docs/development.md) - Contributing guidelines
+- **[ChromaDB Integration](docs/chromadb_julia_integration.md)** - Vector database technical documentation
+- **[ChromaDB Quick Reference](docs/chromadb_quick_reference.md)** - Quick setup and usage guide
+- **[Enhanced Workflow Guide](docs/enhanced_workflow_integration_guide.md)** - Vector database workflow integration
 
 ## Development
 

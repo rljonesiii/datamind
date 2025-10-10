@@ -7,7 +7,7 @@ Maintains global state and coordinates between specialized agents.
 mutable struct MetaController
     experiment::Experiment
     agents::Dict{String, Any}
-    knowledge_graph::KnowledgeGraph
+    knowledge_graph::Union{KnowledgeGraph, EnhancedKnowledgeGraph}
     config::Dict{String, Any}
     message_bus::Vector{AgentMessage}
     
@@ -15,11 +15,15 @@ mutable struct MetaController
         controller = new()
         controller.experiment = experiment
         controller.agents = Dict{String, Any}()
-        controller.knowledge_graph = KnowledgeGraph()
+        
+        # Initialize enhanced knowledge graph with vector database support
+        base_kg = KnowledgeGraph()
+        controller.knowledge_graph = initialize_vector_knowledge_graph(base_kg)
+        
         controller.config = config
         controller.message_bus = Vector{AgentMessage}()
         
-        # Initialize agents
+        # Initialize agents with enhanced knowledge graph
         controller.agents["planning"] = PlanningAgent(config["agents"]["planning"])
         controller.agents["codegen"] = CodeGenAgent(config["agents"]["codegen"])
         controller.agents["evaluation"] = EvaluationAgent(config["agents"]["evaluation"])
@@ -33,16 +37,30 @@ end
 
 Executes the main experiment loop until completion or max iterations.
 """
-function run_experiment_cycle(controller::MetaController, max_iterations::Int=10)
+function run_experiment_cycle(controller::MetaController, max_iterations::Int=5)
     results = Vector{ExperimentResult}()
     
     for iteration in 1:max_iterations
-        println("🔄 Starting iteration $iteration")
-        
         try
-            # Planning phase
             controller.experiment.state = PLANNING
-            println("  📋 Planning phase...")
+            println("\n🔄 Iteration $iteration")
+            println("  🧠 Planning phase...")
+            
+            # Pass enhanced knowledge graph to experiment context
+            controller.experiment.context["knowledge_graph"] = controller.knowledge_graph
+            
+            # Generate embeddings for research question at start of experiment
+            if controller.knowledge_graph isa EnhancedKnowledgeGraph
+                try
+                    embed_research_question(controller.knowledge_graph, 
+                                          controller.experiment.research_question, 
+                                          controller.experiment.id)
+                catch e
+                    @warn "Failed to embed research question" error=e
+                end
+            end
+            
+            # Planning phase
             plan = generate_plan(controller.agents["planning"], controller.experiment)
             
             # Code generation phase  
@@ -74,8 +92,28 @@ function run_experiment_cycle(controller::MetaController, max_iterations::Int=10
             
             push!(results, result)
             
-            # Update knowledge graph
-            update_knowledge(controller.knowledge_graph, controller.experiment, result)
+            # Update knowledge graph (handles both regular and enhanced)
+            if controller.knowledge_graph isa EnhancedKnowledgeGraph
+                # Update the underlying knowledge graph
+                update_knowledge(controller.knowledge_graph.in_memory_kg, controller.experiment, result)
+                
+                # Store code patterns and results in vector database
+                try
+                    # Embed the code pattern for future reuse
+                    code_description = "$(plan["hypothesis"]): $(join(plan["steps"], " -> "))"
+                    embed_research_question(controller.knowledge_graph, code_description, "code_$(controller.experiment.id)_iter_$iteration")
+                    
+                    # Embed successful results for benchmarking
+                    if evaluation.success
+                        result_description = "Success: $(evaluation.summary) ($(join(keys(evaluation.metrics), ", ")))"
+                        embed_research_question(controller.knowledge_graph, result_description, "result_$(controller.experiment.id)_iter_$iteration")
+                    end
+                catch e
+                    @warn "Failed to embed code patterns/results" error=e
+                end
+            else
+                update_knowledge(controller.knowledge_graph, controller.experiment, result)
+            end
             
             # Check if experiment is complete
             if evaluation.success && evaluation.confidence > 0.8

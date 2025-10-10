@@ -17,9 +17,8 @@ using Pkg
 Pkg.activate(".")
 
 # Load the enhanced DSAssist module
-# Load enhanced workflow foundation
-include("enhanced_workflow_foundation.jl")
-using .EnhancedWorkflow
+include("../src/DSAssist.jl")
+using .DSAssist
 using .DSAssist.JuliaNativeML
 using Random, Statistics
 

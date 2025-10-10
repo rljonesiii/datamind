@@ -82,6 +82,25 @@ function build_planning_context(experiment::Experiment)
         end
     end
     
+    # Enhanced: Add semantic insights from vector database
+    if haskey(experiment.context, "knowledge_graph") 
+        kg = experiment.context["knowledge_graph"]
+        if kg isa EnhancedKnowledgeGraph
+            try
+                semantic_insights = enhanced_query_insights(kg, experiment.research_question, k=3)
+                if !isempty(semantic_insights)
+                    push!(context_parts, "Similar successful experiments:")
+                    for insight in semantic_insights
+                        similarity = get(insight, "semantic_similarity", get(insight, "combined_score", 0.0))
+                        push!(context_parts, "  - $(insight["research_question"]) ($(round(similarity*100, digits=1))% similar)")
+                    end
+                end
+            catch e
+                @warn "Failed to get semantic insights for planning" error=e
+            end
+        end
+    end
+    
     return join(context_parts, "\n")
 end
 
