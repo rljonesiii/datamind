@@ -3,6 +3,8 @@
 ## Table of Contents
 
 - [Agent Architecture](architecture.md) - System design and agent communication  
+- [Architecture Diagrams](architecture_diagrams.md) - Comprehensive Mermaid diagrams and visual system overview
+- [Architecture Diagrams (Compatible)](architecture_diagrams_compatible.md) - Simplified diagrams for older Mermaid versions
 - **Plotting & Visualization**:
   - [Plotting Capabilities](plotting_capabilities.md) - Interactive plotting with Pluto.jl and visualization features
   - [Julia ML Quick Reference](julia_ml_quick_reference.md) - ML operations and plotting reference
