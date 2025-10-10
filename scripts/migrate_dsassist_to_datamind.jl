@@ -1,7 +1,17 @@
 #!/usr/bin/env julia
 
 """
-Migration script to rename DataMind node labels to DataMind in Neo4j database.
+Migration script to rename DataMind node labels to DataMifunction migrate_dsassist_to_datamind()
+    println("🔄 Starting migration from DSAssist to DataMind...")
+    
+    # Check if old nodes exist
+    dsassist_exp_count = get_node_count("DSAssistExperiment")
+    dsassist_iter_count = get_node_count("DSAssistIteration")
+    
+    if dsassist_exp_count == 0 && dsassist_iter_count == 0
+        println("✅ No DSAssist nodes found. Migration not needed.")
+        return true
+    end database.
 
 This script will:
 1. Update DataMindExperiment nodes to DataMindExperiment
@@ -29,8 +39,15 @@ function execute_cypher(query::String, parameters::Dict{String, Any}=Dict{String
         error("NEO4J_PASSWORD environment variable must be set")
     end
     
+    # Convert bolt URI to HTTP URI if needed
+    uri = NEO4J_URI
+    if startswith(uri, "bolt://")
+        # Convert bolt://localhost:7687 to http://localhost:7474
+        uri = replace(uri, "bolt://" => "http://", ":7687" => ":7474")
+    end
+    
     # Prepare HTTP request
-    endpoint = NEO4J_URI * "/db/neo4j/tx/commit"
+    endpoint = uri * "/db/neo4j/tx/commit"
     auth_header = "Basic " * base64encode("$(NEO4J_USER):$(NEO4J_PASSWORD)")
     headers = [
         "Authorization" => auth_header,
