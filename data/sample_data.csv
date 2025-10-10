@@ -1,0 +1,16 @@
+name,age,salary,department,satisfaction_score
+Alice,28,75000,Engineering,8.5
+Bob,34,82000,Engineering,7.2
+Carol,29,68000,Marketing,9.1
+David,41,95000,Engineering,6.8
+Eve,26,55000,Marketing,8.7
+Frank,35,78000,Sales,7.5
+Grace,31,71000,Engineering,8.9
+Henry,45,105000,Sales,6.2
+Iris,27,63000,Marketing,9.3
+Jack,39,88000,Engineering,7.8
+Kate,33,76000,Sales,8.1
+Leo,28,69000,Marketing,8.4
+Mary,42,92000,Engineering,7.0
+Nick,30,74000,Sales,8.6
+Olivia,25,58000,Marketing,9.0

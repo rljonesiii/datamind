@@ -1,0 +1,16 @@
+date,temperature,humidity,pressure,weather_condition,city
+2024-01-01,15.2,65,1013.2,Sunny,New York
+2024-01-02,12.8,72,1015.1,Cloudy,New York
+2024-01-03,18.5,58,1012.8,Sunny,New York
+2024-01-04,10.1,78,1016.3,Rainy,New York
+2024-01-05,14.7,69,1014.2,Partly Cloudy,New York
+2024-01-01,22.3,45,1011.5,Sunny,Los Angeles
+2024-01-02,24.1,42,1012.8,Sunny,Los Angeles
+2024-01-03,20.8,55,1013.4,Cloudy,Los Angeles
+2024-01-04,26.2,38,1010.9,Sunny,Los Angeles
+2024-01-05,23.5,48,1012.1,Partly Cloudy,Los Angeles
+2024-01-01,5.8,82,1018.7,Snowy,Chicago
+2024-01-02,3.2,85,1019.2,Snowy,Chicago
+2024-01-03,8.1,76,1017.3,Cloudy,Chicago
+2024-01-04,11.4,71,1015.8,Rainy,Chicago
+2024-01-05,7.9,79,1016.9,Cloudy,Chicago

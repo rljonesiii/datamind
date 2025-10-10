@@ -1,0 +1,16 @@
+product_id,product_name,category,price,rating,reviews_count,in_stock
+1,Wireless Headphones,Electronics,99.99,4.5,1250,true
+2,Coffee Maker,Appliances,79.99,4.2,890,true
+3,Running Shoes,Sports,129.99,4.7,2150,false
+4,Office Chair,Furniture,249.99,4.1,456,true
+5,Smartphone,Electronics,699.99,4.4,3200,true
+6,Laptop,Electronics,1299.99,4.6,1890,true
+7,Desk Lamp,Furniture,34.99,4.0,234,true
+8,Yoga Mat,Sports,29.99,4.3,567,true
+9,Blender,Appliances,89.99,4.5,678,false
+10,Book,Education,19.99,4.8,345,true
+11,Tablet,Electronics,399.99,4.2,1123,true
+12,Water Bottle,Sports,24.99,4.6,890,true
+13,Monitor,Electronics,299.99,4.3,445,true
+14,Gaming Mouse,Electronics,59.99,4.4,1567,true
+15,Backpack,Accessories,79.99,4.1,234,true
