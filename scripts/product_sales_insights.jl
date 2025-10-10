@@ -26,12 +26,12 @@ end
 
 load_env_file()
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 # Import required components
-using .DSAssist: PlanningAgent, CodeGenAgent, EvaluationAgent
-using .DSAssist: AgentConfig, LLMClient, call_llm
+using .DataMind: PlanningAgent, CodeGenAgent, EvaluationAgent
+using .DataMind: AgentConfig, LLMClient, call_llm
 using DataFrames, CSV, Statistics
 import JSON3
 

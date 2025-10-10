@@ -18,14 +18,14 @@ end
 
 # ╔═╡ 2f7b8c90-2345-6789-bcde-f012345678ab
 begin
-	# Activate DSAssist environment
+	# Activate DataMind environment
 	using Pkg
 	Pkg.activate("..")
 	
-	# Core DSAssist components
-	include("../src/DSAssist.jl")
-	using .DSAssist
-	using .DSAssist.JuliaNativeML
+	# Core DataMind components
+	include("../src/DataMind.jl")
+	using .DataMind
+	using .DataMind.JuliaNativeML
 	
 	# Interactive components
 	using PlutoUI
@@ -37,7 +37,7 @@ begin
 	plotlyjs()
 	
 	md"""
-	✅ **DSAssist Interactive Environment Ready!**
+	✅ **DataMind Interactive Environment Ready!**
 	
 	🚀 Julia Native ML: 5-100x faster than Python/sklearn
 	"""
@@ -45,11 +45,11 @@ end
 
 # ╔═╡ 8f6a9c90-1234-5678-9abc-def012345678
 md"""
-# 💳 DSAssist: Interactive Credit Card Analytics Dashboard
+# 💳 DataMind: Interactive Credit Card Analytics Dashboard
 
 **Reactive Pluto Notebook with Julia Native ML**
 
-This interactive dashboard demonstrates the DSAssist agentic data science capabilities with:
+This interactive dashboard demonstrates the DataMind agentic data science capabilities with:
 - 🚀 **5-100x faster processing** than Python/sklearn
 - 📊 **Interactive visualizations** with real-time updates
 - 🤖 **Production-ready ML pipeline** with uncertainty quantification
@@ -371,7 +371,7 @@ end
 md"""
 ## 🚀 Performance Benchmarks
 
-DSAssist Julia Native ML vs Traditional Python/sklearn:
+DataMind Julia Native ML vs Traditional Python/sklearn:
 
 - **Data Processing:** 100x faster with DataFrames.jl
 - **Model Training:** 50x faster with GLM.jl  

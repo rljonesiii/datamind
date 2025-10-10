@@ -58,10 +58,10 @@ function test_direct_neo4j_queries()
     println("👤 User: $user")
     
     try
-        # Query 1: Count all DSAssist nodes
-        println("\n📊 Query 1: Counting DSAssist experiments...")
+        # Query 1: Count all DataMind nodes
+        println("\n📊 Query 1: Counting DataMind experiments...")
         query1 = """
-        MATCH (e:DSAssistExperiment)
+        MATCH (e:DataMindExperiment)
         RETURN count(e) as experiment_count
         """
         
@@ -79,7 +79,7 @@ function test_direct_neo4j_queries()
             data = result1["results"][1]["data"]
             if !isempty(data)
                 count = data[1]["row"][1]
-                println("✅ Found $count DSAssist experiments in database")
+                println("✅ Found $count DataMind experiments in database")
             else
                 println("📭 No experiments found in database")
             end
@@ -88,7 +88,7 @@ function test_direct_neo4j_queries()
         # Query 2: List recent experiments
         println("\n📊 Query 2: Recent experiments...")
         query2 = """
-        MATCH (e:DSAssistExperiment)
+        MATCH (e:DataMindExperiment)
         RETURN e.id, e.research_question, e.created_at, e.status
         ORDER BY e.created_at DESC
         LIMIT 5
@@ -120,7 +120,7 @@ function test_direct_neo4j_queries()
         # Query 3: Count iterations and success rate
         println("\n📊 Query 3: Iteration statistics...")
         query3 = """
-        MATCH (i:DSAssistIteration)
+        MATCH (i:DataMindIteration)
         RETURN 
             count(i) as total_iterations,
             sum(case when i.success then 1 else 0 end) as successful_iterations,
@@ -151,7 +151,7 @@ function test_direct_neo4j_queries()
         # Query 4: Most common metrics
         println("\n📊 Query 4: Most common metrics...")
         query4 = """
-        MATCH (i:DSAssistIteration)
+        MATCH (i:DataMindIteration)
         UNWIND keys(i.metrics) as metric_name
         RETURN metric_name, count(*) as usage_count
         ORDER BY usage_count DESC

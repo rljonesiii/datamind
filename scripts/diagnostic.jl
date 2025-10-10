@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 # Minimal diagnostic script
-println("🔍 DSAssist Diagnostic")
+println("🔍 DataMind Diagnostic")
 println("=" ^ 30)
 
 try
@@ -21,7 +21,7 @@ try
     project_root = dirname(script_dir)
     
     println("  Project root: $project_root")
-    println("  DSAssist.jl exists: $(isfile(joinpath(project_root, "src", "DSAssist.jl")))")
+    println("  DataMind.jl exists: $(isfile(joinpath(project_root, "src", "DataMind.jl")))")
     println("  Config exists: $(isfile(joinpath(project_root, "config", "agents.yaml")))")
     println("  Data directory exists: $(isdir(joinpath(project_root, "data")))")
     

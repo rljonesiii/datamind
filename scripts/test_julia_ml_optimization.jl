@@ -15,9 +15,9 @@ This test suite validates all optimization features:
 
 using Pkg
 Pkg.activate(".")
-include("../src/DSAssist.jl")
-using .DSAssist
-using .DSAssist.JuliaNativeML
+include("../src/DataMind.jl")
+using .DataMind
+using .DataMind.JuliaNativeML
 using Random, Statistics, Test
 
 println("🧪 JULIA ML OPTIMIZATION TEST SUITE")

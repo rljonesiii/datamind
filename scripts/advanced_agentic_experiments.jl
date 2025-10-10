@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 """
-DSAssist: Advanced Agentic Credit Card Experiments
+DataMind: Advanced Agentic Credit Card Experiments
 ==================================================
 
 Demonstrates sophisticated agentic workflows with iterative refinement,
@@ -19,8 +19,8 @@ Features:
 using Pkg
 Pkg.activate(".")
 
-include("../src/DSAssist.jl")
-using .DSAssist
+include("../src/DataMind.jl")
+using .DataMind
 
 println("🧠 DSASSIST: ADVANCED AGENTIC EXPERIMENTS")
 println("=" ^ 70)

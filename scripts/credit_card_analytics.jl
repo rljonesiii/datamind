@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 """
-DSAssist: Credit Card Customer Analytics
+DataMind: Credit Card Customer Analytics
 ========================================
 
 Comprehensive credit card customer behavior analysis using Julia native ML
@@ -21,11 +21,11 @@ Features:
 using Pkg
 Pkg.activate(".")
 
-# Load the optimized DSAssist system
+# Load the optimized DataMind system
 # Load enhanced workflow foundation
 include("enhanced_workflow_foundation.jl")
 using .EnhancedWorkflow
-using .DSAssist.JuliaNativeML
+using .DataMind.JuliaNativeML
 using DataFrames, CSV, Statistics, Random, GLM
 
 println("💳 DSASSIST: CREDIT CARD CUSTOMER ANALYTICS")

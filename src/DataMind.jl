@@ -1,4 +1,4 @@
-module DSAssist
+module DataMind
 
 using HTTP, JSON3, DataFrames, YAML
 using CSV, Statistics
@@ -56,4 +56,4 @@ export update_knowledge, query_insights, query_techniques_for_domain, query_code
        EnhancedKnowledgeGraph, initialize_vector_knowledge_graph, 
        enhanced_query_insights, semantic_similarity_search, embed_research_question
 
-end # module DSAssist
+end # module DataMind

@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 """
-DSAssist: Credit Card Analytics Guided Tour
+DataMind: Credit Card Analytics Guided Tour
 ===========================================
 
 Demonstrates the agentic workflow system using natural language prompts

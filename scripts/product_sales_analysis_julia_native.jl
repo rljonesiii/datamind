@@ -28,10 +28,10 @@ using StatsBase
 using Plots
 using Random
 
-# Import DSAssist modules
-include("../src/DSAssist.jl")
-using .DSAssist
-using .DSAssist.JuliaNativeML
+# Import DataMind modules
+include("../src/DataMind.jl")
+using .DataMind
+using .DataMind.JuliaNativeML
 
 function main()
     println("🚀 PRODUCT SALES ANALYSIS - JULIA NATIVE VERSION")

@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 """
-DSAssist: Weather Data Analysis Demo
+DataMind: Weather Data Analysis Demo
 ===================================
 
 Demonstrates weather data analysis capabilities with simulated agentic workflow.

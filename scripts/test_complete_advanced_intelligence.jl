@@ -26,8 +26,8 @@ end
 
 load_env_file()
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 # Import internal Neo4j functions for direct testing
 include(joinpath(project_root, "src", "knowledge", "neo4j_graph.jl"))
@@ -224,7 +224,7 @@ function test_advanced_queries()
     
     # Query 1: Best ensemble methods by performance
     query1 = """
-    MATCH (em:EnsembleMethod)<-[:USES_ENSEMBLE_METHOD]-(i:DSAssistIteration)
+    MATCH (em:EnsembleMethod)<-[:USES_ENSEMBLE_METHOD]-(i:DataMindIteration)
     WHERE i.success = true
     WITH em, AVG(i.effectiveness_score) as avg_performance, COUNT(i) as usage_count
     WHERE usage_count >= 1
@@ -406,6 +406,6 @@ println("✅ Advanced Query Capabilities: WORKING")
 println("✅ Intelligent Agent Decision-Making: WORKING")
 println("✅ Knowledge Graph Evolution: WORKING")
 println("")
-println("🎯 RESULT: DSAssist now has comprehensive ensemble learning intelligence")
+println("🎯 RESULT: DataMind now has comprehensive ensemble learning intelligence")
 println("   and cognitive capabilities that enable truly intelligent data science automation!")
 println("=" ^ 80)

@@ -3,15 +3,15 @@
 using Pkg
 Pkg.activate(".")
 
-include("src/DSAssist.jl")
-using .DSAssist
+include("src/DataMind.jl")
+using .DataMind
 using YAML
 
 """
-Simple test version of DSAssist with better error handling.
+Simple test version of DataMind with better error handling.
 """
 function test_dsassist()
-    println("🧪 DSAssist Test Mode")
+    println("🧪 DataMind Test Mode")
     println("=" ^ 40)
     
     try

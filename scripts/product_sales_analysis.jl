@@ -26,11 +26,11 @@ end
 
 load_env_file()
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 # Import types and create helper function
-using .DSAssist: Experiment, ExperimentResult, ExperimentState, create_neo4j_knowledge_graph
+using .DataMind: Experiment, ExperimentResult, ExperimentState, create_neo4j_knowledge_graph
 
 # Helper function to create experiments
 function create_experiment(research_question::String, data_path::String="")
@@ -298,7 +298,7 @@ experiment2 = create_experiment(
 
 bayesian_ensemble_code = """
 using CSV, DataFrames, GLM, StatsModels, Random, Statistics
-using DSAssist.JuliaNativeML
+using DataMind.JuliaNativeML
 
 # Load and prepare data for stock classification
 df = CSV.read("$(data_path)", DataFrame)
@@ -432,7 +432,7 @@ experiment3 = create_experiment(
 
 multi_objective_code = """
 using CSV, DataFrames, GLM, StatsModels, Random, Statistics, LinearAlgebra
-using DSAssist.JuliaNativeML
+using DataMind.JuliaNativeML
 
 # Load data for multi-objective optimization  
 df = CSV.read("$(data_path)", DataFrame)

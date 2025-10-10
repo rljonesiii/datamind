@@ -1,10 +1,10 @@
 #!/usr/bin/env julia
 
 """
-DSAssist: Credit Card Analytics Plotting Demo
+DataMind: Credit Card Analytics Plotting Demo
 ============================================
 
-Demonstrates the plotting capabilities of DSAssist with:
+Demonstrates the plotting capabilities of DataMind with:
 - 📊 Business intelligence visualizations
 - 📈 Customer analytics dashboards  
 - 🎯 Risk assessment charts
@@ -16,11 +16,11 @@ Successfully integrates Julia native ML with visualization layer!
 using Pkg
 Pkg.activate(".")
 
-# Load DSAssist components
+# Load DataMind components
 # Load enhanced workflow foundation
 include("enhanced_workflow_foundation.jl")
 using .EnhancedWorkflow
-using .DSAssist.JuliaNativeML
+using .DataMind.JuliaNativeML
 
 # Core plotting
 using Plots
@@ -215,7 +215,7 @@ println("📊 Creating Comprehensive Dashboard...")
 dashboard = plot(p1, p2, p3, p4, p5, 
     layout = (3, 2), 
     size = (1200, 900),
-    plot_title = "DSAssist Credit Card Analytics Dashboard"
+    plot_title = "DataMind Credit Card Analytics Dashboard"
 )
 
 savefig(dashboard, "plots/comprehensive_dashboard.png")
@@ -240,7 +240,7 @@ println("💎 Average CLV: \$$avg_clv per customer")
 println("💰 Portfolio Value: \$$(total_portfolio)M total balance")
 println("🎯 ROI Potential: \$$(sum(roi_values))M annual opportunity")
 
-println("\n🚀 DSAssist PLOTTING CAPABILITIES:")
+println("\n🚀 DataMind PLOTTING CAPABILITIES:")
 println("✅ Julia Native Performance: 5-100x faster than Python")
 println("✅ Business Intelligence: Executive-ready visualizations")
 println("✅ ML Integration: Model performance and feature analysis")
@@ -251,7 +251,7 @@ println("\n🎯 NEXT STEPS:")
 println("📱 Interactive Pluto Notebook: notebooks/credit_card_interactive_analytics.jl")
 println("🌐 Web Dashboard: Deploy with PlotlyJS backend")
 println("📊 Real-time Monitoring: Integrate with live data feeds")
-println("🤖 Agentic Integration: Connect with DSAssist agent workflows")
+println("🤖 Agentic Integration: Connect with DataMind agent workflows")
 
 println("\n" * "="^60)
 println("🎨 DSASSIST PLOTTING: PRODUCTION READY!")

@@ -26,18 +26,18 @@ end
 
 load_env_file()
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 # Import required components
-using .DSAssist: PlanningAgent, CodeGenAgent, EvaluationAgent
-using .DSAssist: AgentConfig, LLMClient, call_llm
+using .DataMind: PlanningAgent, CodeGenAgent, EvaluationAgent
+using .DataMind: AgentConfig, LLMClient, call_llm
 using DataFrames, CSV, Statistics, StatsBase
 import JSON3
 
 # Command line interface
 function main()
-    println("🚀 DSAssist: Direct LLM Analysis")
+    println("🚀 DataMind: Direct LLM Analysis")
     println("=" ^ 50)
     
     # Get research question

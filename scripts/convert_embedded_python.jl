@@ -22,8 +22,8 @@ using StatsBase
 using GLM
 using StatsModels
 
-include("../src/DSAssist.jl")
-using .DSAssist
+include("../src/DataMind.jl")
+using .DataMind
 
 function convert_python_ensemble_to_julia(data_path::String)
     """Convert the Python ensemble code to Julia native equivalent"""

@@ -27,11 +27,11 @@ function demo()
     
     # Example from the conversion summary
     println("\n📊 Example 1: Load data (faster than pandas)")
-    df = DSAssist.JuliaNativeML.load_and_prepare_data("data/product_sales.csv")
+    df = DataMind.JuliaNativeML.load_and_prepare_data("data/product_sales.csv")
     println("✅ Loaded $(nrow(df)) products")
     
     println("\n🤖 Example 2: Run ML analysis (native Julia)")  
-    results = DSAssist.JuliaNativeML.compare_ensemble_methods(
+    results = DataMind.JuliaNativeML.compare_ensemble_methods(
         "data/product_sales.csv", 
         "price", 
         ["rating", "reviews_count", "category"]

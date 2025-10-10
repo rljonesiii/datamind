@@ -1,11 +1,11 @@
 #!/usr/bin/env julia
 
-# Neo4j Setup Helper for DSAssist
+# Neo4j Setup Helper for DataMind
 
 using Pkg
 Pkg.activate(".")
 
-println("🔧 DSAssist Neo4j Setup Helper")
+println("🔧 DataMind Neo4j Setup Helper")
 println("=" ^ 40)
 
 function check_env_file()
@@ -109,15 +109,15 @@ function test_neo4j_connection()
         # Test the connection by creating a knowledge graph
         script_dir = dirname(@__FILE__)
         project_root = dirname(script_dir)
-        include(joinpath(project_root, "src", "DSAssist.jl"))
+        include(joinpath(project_root, "src", "DataMind.jl"))
         
         # Import the module in a way that works at function level
-        Main.eval(:(using .DSAssist))
+        Main.eval(:(using .DataMind))
         kg = Main.eval(:(KnowledgeGraph()))
         
         if kg.neo4j_backend !== nothing
             println("✅ Neo4j connection successful!")
-            println("🎉 Your DSAssist system is ready to use Neo4j knowledge graph")
+            println("🎉 Your DataMind system is ready to use Neo4j knowledge graph")
             return true
         else
             println("⚠️  Using in-memory fallback")
@@ -133,7 +133,7 @@ function test_neo4j_connection()
 end
 
 function run_setup()
-    println("Starting DSAssist Neo4j setup...\n")
+    println("Starting DataMind Neo4j setup...\n")
     
     # Step 1: Check .env file
     if !check_env_file()

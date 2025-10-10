@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 """
-DSAssist: Weather Data Agentic Analysis
+DataMind: Weather Data Agentic Analysis
 =======================================
 
 Demonstrates the agentic workflow system using natural language prompts
@@ -377,5 +377,5 @@ println("✓ Uncertainty quantification and confidence intervals")
 
 println("\n" * "="^70)
 println("🌤️  WEATHER AGENTIC ANALYSIS COMPLETE!")
-println("Thank you for exploring DSAssist's weather analysis capabilities!")
+println("Thank you for exploring DataMind's weather analysis capabilities!")
 println("=" ^ 70)

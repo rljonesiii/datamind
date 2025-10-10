@@ -14,8 +14,8 @@ cd(project_root)
 original_password = get(ENV, "NEO4J_PASSWORD", "")
 ENV["NEO4J_PASSWORD"] = ""  # Force fallback to in-memory
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 function test_fallback_behavior()
     println("🧪 Testing Knowledge Graph Fallback Behavior")

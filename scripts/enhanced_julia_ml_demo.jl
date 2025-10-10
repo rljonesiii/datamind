@@ -16,11 +16,11 @@ This script showcases the refined and optimized Julia native ML capabilities:
 using Pkg
 Pkg.activate(".")
 
-# Load the enhanced DSAssist module
+# Load the enhanced DataMind module
 # Load enhanced workflow foundation
 include("enhanced_workflow_foundation.jl")
 using .EnhancedWorkflow
-using .DSAssist.JuliaNativeML
+using .DataMind.JuliaNativeML
 using Random, Statistics
 
 println("🚀 ENHANCED JULIA ML OPTIMIZATION EXAMPLE")

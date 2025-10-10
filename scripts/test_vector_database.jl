@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 """
-Vector Database Integration Test for DSAssist
+Vector Database Integration Test for DataMind
 
 Tests the enhanced knowledge graph with vector embeddings alongside Neo4j.
 Demonstrates semantic search capabilities for improved agent efficiency.
@@ -10,8 +10,8 @@ Demonstrates semantic search capabilities for improved agent efficiency.
 using Pkg
 Pkg.activate(".")
 
-include("../src/DSAssist.jl")
-using .DSAssist
+include("../src/DataMind.jl")
+using .DataMind
 
 # Include vector database module
 include("../src/knowledge/vector_db.jl")

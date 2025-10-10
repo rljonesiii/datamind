@@ -28,8 +28,8 @@ end
 
 load_env_file()
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 function test_neo4j_knowledge_graph()
     println("🧪 Testing Neo4j Knowledge Graph Integration")

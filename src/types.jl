@@ -1,4 +1,4 @@
-# Core types for the DSAssist system
+# Core types for the DataMind system
 using Dates, UUIDs
 
 """

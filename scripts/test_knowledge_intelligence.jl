@@ -26,8 +26,8 @@ end
 
 load_env_file()
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 function simulate_intelligent_agent_queries()
     println("🤖 Intelligent Agent Decision-Making with Knowledge Graph")

@@ -1,5 +1,5 @@
 """
-    VectorDatabase Integration for DSAssist Knowledge Graph
+    VectorDatabase Integration for DataMind Knowledge Graph
 
 Enhanced semantic search capabilities using vector embeddings alongside Neo4j graph structure.
 """

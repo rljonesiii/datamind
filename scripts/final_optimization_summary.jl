@@ -20,9 +20,9 @@ Final Julia ML Optimization & Refinement Summary
 
 using Pkg
 Pkg.activate(".")
-include("../src/DSAssist.jl")
-using .DSAssist
-using .DSAssist.JuliaNativeML
+include("../src/DataMind.jl")
+using .DataMind
+using .DataMind.JuliaNativeML
 using Random, Statistics, DataFrames
 
 println("🎉 JULIA ML OPTIMIZATION & REFINEMENT SUMMARY")
@@ -145,5 +145,5 @@ println("  ✅ Statistical rigor and validation built-in")
 println("  ✅ Memory efficiency and scalability ready")
 println("  ✅ Model interpretability and confidence standard")
 
-println("\n🚀 DSAssist Julia ML: OPTIMIZATION COMPLETE! 🚀")
+println("\n🚀 DataMind Julia ML: OPTIMIZATION COMPLETE! 🚀")
 println("=" ^ 70)

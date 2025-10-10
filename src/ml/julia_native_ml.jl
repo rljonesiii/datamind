@@ -1,5 +1,5 @@
 """
-Julia Native ML/DS Module for DSAssist
+Julia Native ML/DS Module for DataMind
 
 This module provides native Julia implementations for machine learning and data science 
 workflows, replacing Python dependencies with Julia's high-performance ecosystem.

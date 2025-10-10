@@ -1,10 +1,10 @@
 #!/usr/bin/env julia
 
 """
-Batch Update All DSAssist Scripts with Enhanced Vector Database Workflow
+Batch Update All DataMind Scripts with Enhanced Vector Database Workflow
 ========================================================================
 
-This script updates all existing DSAssist scripts to use the enhanced
+This script updates all existing DataMind scripts to use the enhanced
 workflow foundation with vector database capabilities.
 """
 
@@ -47,9 +47,9 @@ function update_script_with_enhanced_workflow(script_path::String)
     end
     
     # Update includes
-    if occursin("include(\"../src/DSAssist.jl\")", content)
+    if occursin("include(\"../src/DataMind.jl\")", content)
         content = replace(content, 
-            "include(\"../src/DSAssist.jl\")\nusing .DSAssist" =>
+            "include(\"../src/DataMind.jl\")\nusing .DataMind" =>
             "# Load enhanced workflow foundation\ninclude(\"enhanced_workflow_foundation.jl\")\nusing .EnhancedWorkflow"
         )
     end

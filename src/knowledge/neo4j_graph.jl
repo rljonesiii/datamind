@@ -1,7 +1,7 @@
 """
     Neo4jKnowledgeGraph
 
-Neo4j-powered knowledge graph implementation for DSAssist.
+Neo4j-powered knowledge graph implementation for DataMind.
 Maintains experiment provenance and learning history in a Neo4j database.
 """
 
@@ -90,13 +90,13 @@ function initialize_schema(kg::Neo4jKnowledgeGraph)
     # Create constraints and indexes for all node types
     schema_queries = [
         # Core experiment constraints
-        "CREATE CONSTRAINT dsassist_experiment_id IF NOT EXISTS FOR (e:DSAssistExperiment) REQUIRE e.id IS UNIQUE",
-        "CREATE CONSTRAINT dsassist_iteration_id IF NOT EXISTS FOR (i:DSAssistIteration) REQUIRE (i.experiment_id, i.iteration) IS UNIQUE",
+        "CREATE CONSTRAINT datamind_experiment_id IF NOT EXISTS FOR (e:DataMindExperiment) REQUIRE e.id IS UNIQUE",
+        "CREATE CONSTRAINT datamind_iteration_id IF NOT EXISTS FOR (i:DataMindIteration) REQUIRE (i.experiment_id, i.iteration) IS UNIQUE",
         
         # Knowledge artifact constraints
-        "CREATE CONSTRAINT dsassist_pattern_id IF NOT EXISTS FOR (p:CodePattern) REQUIRE p.id IS UNIQUE",
-        "CREATE CONSTRAINT dsassist_technique_name IF NOT EXISTS FOR (t:Technique) REQUIRE t.name IS UNIQUE",
-        "CREATE CONSTRAINT dsassist_domain_name IF NOT EXISTS FOR (d:Domain) REQUIRE d.name IS UNIQUE",
+        "CREATE CONSTRAINT datamind_pattern_id IF NOT EXISTS FOR (p:CodePattern) REQUIRE p.id IS UNIQUE",
+        "CREATE CONSTRAINT datamind_technique_name IF NOT EXISTS FOR (t:Technique) REQUIRE t.name IS UNIQUE",
+        "CREATE CONSTRAINT datamind_domain_name IF NOT EXISTS FOR (d:Domain) REQUIRE d.name IS UNIQUE",
         
         # Cognitive & Learning Intelligence constraints
         "CREATE CONSTRAINT agent_name IF NOT EXISTS FOR (a:Agent) REQUIRE a.name IS UNIQUE",
@@ -138,12 +138,12 @@ function initialize_schema(kg::Neo4jKnowledgeGraph)
         "CREATE CONSTRAINT nonparametric_process_id IF NOT EXISTS FOR (np:NonparametricProcess) REQUIRE np.id IS UNIQUE",
         
         # Performance indexes
-        "CREATE INDEX dsassist_experiment_question IF NOT EXISTS FOR (e:DSAssistExperiment) ON (e.research_question)",
-        "CREATE INDEX dsassist_iteration_success IF NOT EXISTS FOR (i:DSAssistIteration) ON (i.success)",
-        "CREATE INDEX dsassist_experiment_created IF NOT EXISTS FOR (e:DSAssistExperiment) ON (e.created_at)",
-        "CREATE INDEX dsassist_experiment_domain IF NOT EXISTS FOR (e:DSAssistExperiment) ON (e.domain_tags)",
-        "CREATE INDEX dsassist_technique_category IF NOT EXISTS FOR (t:Technique) ON (t.category)",
-        "CREATE INDEX dsassist_pattern_category IF NOT EXISTS FOR (p:CodePattern) ON (p.category)",
+        "CREATE INDEX datamind_experiment_question IF NOT EXISTS FOR (e:DataMindExperiment) ON (e.research_question)",
+        "CREATE INDEX datamind_iteration_success IF NOT EXISTS FOR (i:DataMindIteration) ON (i.success)",
+        "CREATE INDEX datamind_experiment_created IF NOT EXISTS FOR (e:DataMindExperiment) ON (e.created_at)",
+        "CREATE INDEX datamind_experiment_domain IF NOT EXISTS FOR (e:DataMindExperiment) ON (e.domain_tags)",
+        "CREATE INDEX datamind_technique_category IF NOT EXISTS FOR (t:Technique) ON (t.category)",
+        "CREATE INDEX datamind_pattern_category IF NOT EXISTS FOR (p:CodePattern) ON (p.category)",
         
         # Advanced intelligence indexes for performance optimization
         "CREATE INDEX agent_expertise IF NOT EXISTS FOR (a:Agent) ON (a.expertise_level)",
@@ -180,7 +180,7 @@ function update_knowledge(kg::Neo4jKnowledgeGraph, experiment::Experiment, resul
     
     # Create or update experiment node with enhanced metadata
     experiment_query = """
-    MERGE (exp:DSAssistExperiment {id: \$experiment_id})
+    MERGE (exp:DataMindExperiment {id: \$experiment_id})
     SET exp.research_question = \$research_question,
         exp.created_at = \$created_at,
         exp.updated_at = datetime(),
@@ -203,8 +203,8 @@ function update_knowledge(kg::Neo4jKnowledgeGraph, experiment::Experiment, resul
     
     # Create iteration node with enhanced metadata
     iteration_query = """
-    MATCH (exp:DSAssistExperiment {id: \$experiment_id})
-    MERGE (iter:DSAssistIteration {experiment_id: \$experiment_id, iteration: \$iteration})
+    MATCH (exp:DataMindExperiment {id: \$experiment_id})
+    MERGE (iter:DataMindIteration {experiment_id: \$experiment_id, iteration: \$iteration})
     SET iter.success = \$success,
         iter.metrics = \$metrics,
         iter.code_generated = \$code_generated,
@@ -262,7 +262,7 @@ Query similar experiments based on research question similarity
 """
 function query_similar_experiments(kg::Neo4jKnowledgeGraph, research_question::String, limit::Int=5)
     query = """
-    MATCH (exp:DSAssistExperiment)-[:HAS_ITERATION]->(iter:DSAssistIteration)
+    MATCH (exp:DataMindExperiment)-[:HAS_ITERATION]->(iter:DataMindIteration)
     WHERE exp.research_question CONTAINS \$keyword OR \$keyword CONTAINS exp.research_question
     WITH exp, iter, 
          size(split(toLower(exp.research_question), ' ')) as exp_words,
@@ -312,8 +312,8 @@ Get experiment statistics from the knowledge graph
 """
 function get_experiment_statistics(kg::Neo4jKnowledgeGraph)
     query = """
-    MATCH (exp:DSAssistExperiment)
-    OPTIONAL MATCH (exp)-[:HAS_ITERATION]->(iter:DSAssistIteration)
+    MATCH (exp:DataMindExperiment)
+    OPTIONAL MATCH (exp)-[:HAS_ITERATION]->(iter:DataMindIteration)
     RETURN count(DISTINCT exp) as total_experiments,
            count(iter) as total_iterations,
            count(CASE WHEN iter.success = true THEN 1 END) as successful_iterations,
@@ -348,7 +348,7 @@ Query successful patterns from the knowledge graph
 """
 function query_successful_patterns(kg::Neo4jKnowledgeGraph, limit::Int=10)
     query = """
-    MATCH (iter:DSAssistIteration)
+    MATCH (iter:DataMindIteration)
     WHERE iter.success = true AND iter.metrics IS NOT NULL
     WITH iter, 
          keys(apoc.convert.fromJsonMap(iter.metrics)) as metric_keys
@@ -489,7 +489,7 @@ function create_domain_relationships(kg::Neo4jKnowledgeGraph, experiment_id::Str
         SET d.created_at = coalesce(d.created_at, datetime()),
             d.experiment_count = coalesce(d.experiment_count, 0) + 1
         WITH d
-        MATCH (exp:DSAssistExperiment {id: \$experiment_id})
+        MATCH (exp:DataMindExperiment {id: \$experiment_id})
         MERGE (exp)-[:BELONGS_TO_DOMAIN]->(d)
         """
         
@@ -517,7 +517,7 @@ function create_technique_relationships(kg::Neo4jKnowledgeGraph, experiment_id::
             t.usage_count = coalesce(t.usage_count, 0) + 1,
             t.category = \$category
         WITH t
-        MATCH (iter:DSAssistIteration {experiment_id: \$experiment_id, iteration: \$iteration})
+        MATCH (iter:DataMindIteration {experiment_id: \$experiment_id, iteration: \$iteration})
         MERGE (iter)-[:APPLIES_TECHNIQUE]->(t)
         """
         
@@ -574,7 +574,7 @@ function create_code_pattern_relationships(kg::Neo4jKnowledgeGraph, experiment_i
             p.usage_count = coalesce(p.usage_count, 0) + 1,
             p.created_at = coalesce(p.created_at, datetime())
         WITH p
-        MATCH (iter:DSAssistIteration {experiment_id: \$experiment_id, iteration: \$iteration})
+        MATCH (iter:DataMindIteration {experiment_id: \$experiment_id, iteration: \$iteration})
         MERGE (iter)-[:USES_PATTERN]->(p)
         """
         
@@ -640,8 +640,8 @@ Create similarity relationships between experiments
 function create_similarity_relationships(kg::Neo4jKnowledgeGraph, experiment_id::String, research_question::String)
     # Find similar experiments based on text similarity and shared domains
     query = """
-    MATCH (exp1:DSAssistExperiment {id: \$experiment_id})
-    MATCH (exp2:DSAssistExperiment)
+    MATCH (exp1:DataMindExperiment {id: \$experiment_id})
+    MATCH (exp2:DataMindExperiment)
     WHERE exp1.id <> exp2.id
     AND any(tag1 IN exp1.domain_tags WHERE tag1 IN exp2.domain_tags)
     WITH exp1, exp2, 
@@ -676,8 +676,8 @@ Query techniques that work well for a specific domain
 """
 function query_techniques_for_domain(kg::Neo4jKnowledgeGraph, domain_name::String, limit::Int=10)
     query = """
-    MATCH (d:Domain {name: \$domain_name})<-[:BELONGS_TO_DOMAIN]-(exp:DSAssistExperiment)
-    MATCH (exp)-[:HAS_ITERATION]->(iter:DSAssistIteration {success: true})
+    MATCH (d:Domain {name: \$domain_name})<-[:BELONGS_TO_DOMAIN]-(exp:DataMindExperiment)
+    MATCH (exp)-[:HAS_ITERATION]->(iter:DataMindIteration {success: true})
     MATCH (iter)-[:APPLIES_TECHNIQUE]->(t:Technique)
     RETURN t.name as technique,
            t.category as category,
@@ -720,7 +720,7 @@ function query_code_patterns(kg::Neo4jKnowledgeGraph, category::String="", limit
     where_clause = isempty(category) ? "" : "WHERE p.category = \$category"
     
     query = """
-    MATCH (p:CodePattern)<-[:USES_PATTERN]-(iter:DSAssistIteration)
+    MATCH (p:CodePattern)<-[:USES_PATTERN]-(iter:DataMindIteration)
     $where_clause
     WITH p, count(*) as total_usage, sum(case when iter.success then 1 else 0 end) as successful_usage
     RETURN p.name as pattern_name,
@@ -766,10 +766,10 @@ Query experiment lineage and relationships
 """
 function query_experiment_lineage(kg::Neo4jKnowledgeGraph, experiment_id::String)
     query = """
-    MATCH (exp:DSAssistExperiment {id: \$experiment_id})
-    OPTIONAL MATCH (exp)-[r:SIMILAR_TO]->(similar:DSAssistExperiment)
+    MATCH (exp:DataMindExperiment {id: \$experiment_id})
+    OPTIONAL MATCH (exp)-[r:SIMILAR_TO]->(similar:DataMindExperiment)
     OPTIONAL MATCH (exp)-[:BELONGS_TO_DOMAIN]->(domain:Domain)
-    OPTIONAL MATCH (exp)-[:HAS_ITERATION]->(iter:DSAssistIteration)-[:APPLIES_TECHNIQUE]->(tech:Technique)
+    OPTIONAL MATCH (exp)-[:HAS_ITERATION]->(iter:DataMindIteration)-[:APPLIES_TECHNIQUE]->(tech:Technique)
     RETURN exp.research_question as question,
            exp.domain_tags as domains,
            collect(DISTINCT similar.research_question) as similar_experiments,
@@ -803,9 +803,9 @@ Query patterns that work across different domains (transfer learning opportuniti
 """
 function query_cross_domain_patterns(kg::Neo4jKnowledgeGraph, limit::Int=10)
     query = """
-    MATCH (d1:Domain)<-[:BELONGS_TO_DOMAIN]-(exp1:DSAssistExperiment)-[:HAS_ITERATION]->(iter1:DSAssistIteration {success: true})
+    MATCH (d1:Domain)<-[:BELONGS_TO_DOMAIN]-(exp1:DataMindExperiment)-[:HAS_ITERATION]->(iter1:DataMindIteration {success: true})
     MATCH (iter1)-[:USES_PATTERN]->(pattern:CodePattern)
-    MATCH (pattern)<-[:USES_PATTERN]-(iter2:DSAssistIteration {success: true})<-[:HAS_ITERATION]-(exp2:DSAssistExperiment)-[:BELONGS_TO_DOMAIN]->(d2:Domain)
+    MATCH (pattern)<-[:USES_PATTERN]-(iter2:DataMindIteration {success: true})<-[:HAS_ITERATION]-(exp2:DataMindExperiment)-[:BELONGS_TO_DOMAIN]->(d2:Domain)
     WHERE d1.name <> d2.name
     WITH pattern, d1, d2, count(*) as cross_domain_usage
     RETURN pattern.name as pattern_name,
@@ -846,7 +846,7 @@ Query similarity relationships between experiments
 """
 function query_similarity_relationships(kg::Neo4jKnowledgeGraph, limit::Int=10)
     query = """
-    MATCH (exp1:DSAssistExperiment)-[r:SIMILAR_TO]->(exp2:DSAssistExperiment)
+    MATCH (exp1:DataMindExperiment)-[r:SIMILAR_TO]->(exp2:DataMindExperiment)
     RETURN exp1.research_question as exp1_question,
            exp2.research_question as exp2_question,
            r.similarity_score as similarity
@@ -881,7 +881,7 @@ Query domain statistics and experiment counts
 """
 function query_domain_statistics(kg::Neo4jKnowledgeGraph)
     query = """
-    MATCH (d:Domain)<-[:BELONGS_TO_DOMAIN]-(exp:DSAssistExperiment)
+    MATCH (d:Domain)<-[:BELONGS_TO_DOMAIN]-(exp:DataMindExperiment)
     RETURN d.name as domain_name, 
            count(exp) as experiment_count,
            d.created_at as domain_created
@@ -1003,7 +1003,7 @@ function create_ensemble_relationships(kg::Neo4jKnowledgeGraph, experiment_id::S
             END
         
         WITH em
-        MATCH (i:DSAssistIteration {experiment_id: \$experiment_id, iteration: \$iteration})
+        MATCH (i:DataMindIteration {experiment_id: \$experiment_id, iteration: \$iteration})
         MERGE (i)-[:USES_ENSEMBLE_METHOD]->(em)
         """
         
@@ -1258,7 +1258,7 @@ function create_cognitive_intelligence(kg::Neo4jKnowledgeGraph, agent_name::Stri
     WITH s
     MATCH (a)-[r:EMPLOYS_STRATEGY]->(s)
     WITH s, COUNT(r) as total_usage
-    OPTIONAL MATCH (i:DSAssistIteration)-[:USED_STRATEGY]->(s)
+    OPTIONAL MATCH (i:DataMindIteration)-[:USED_STRATEGY]->(s)
     WHERE i.success = true
     WITH s, total_usage, COUNT(i) as successful_usage
     SET s.success_rate = CASE WHEN total_usage > 0 THEN toFloat(successful_usage) / total_usage ELSE 0.5 END
@@ -1281,7 +1281,7 @@ Query ensemble intelligence recommendations for a domain
 """
 function query_ensemble_recommendations(kg::Neo4jKnowledgeGraph, domain::String, data_size::String="medium")
     query = """
-    MATCH (em:EnsembleMethod)<-[:USES_ENSEMBLE_METHOD]-(i:DSAssistIteration)<-[:HAS_ITERATION]-(e:DSAssistExperiment)
+    MATCH (em:EnsembleMethod)<-[:USES_ENSEMBLE_METHOD]-(i:DataMindIteration)<-[:HAS_ITERATION]-(e:DataMindExperiment)
     WHERE ANY(tag IN e.domain_tags WHERE toLower(tag) CONTAINS toLower(\$domain))
     AND i.success = true
     

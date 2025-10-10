@@ -3,15 +3,15 @@
 using Pkg
 Pkg.activate(".")
 
-include("DSAssist.jl")
-using .DSAssist
+include("DataMind.jl")
+using .DataMind
 using YAML
 
 """
-Main entry point for DSAssist system.
+Main entry point for DataMind system.
 """
 function main()
-    println("🧪 DSAssist: Agentic Data Science Workflows")
+    println("🧪 DataMind: Agentic Data Science Workflows")
     println("=" ^ 50)
     
     # Load configuration

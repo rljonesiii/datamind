@@ -25,8 +25,8 @@ end
 
 load_env_file()
 
-include(joinpath(project_root, "src", "DSAssist.jl"))
-using .DSAssist
+include(joinpath(project_root, "src", "DataMind.jl"))
+using .DataMind
 
 function demonstrate_enhanced_ontology()
     println("🧠 Enhanced Knowledge Graph Ontology Demonstration")

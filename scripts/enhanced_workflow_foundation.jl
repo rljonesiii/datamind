@@ -1,9 +1,9 @@
 """
-Enhanced DSAssist Workflow Foundation
+Enhanced DataMind Workflow Foundation
 ===================================
 
 Shared module that provides enhanced agentic workflow capabilities with vector database
-integration to all DSAssist scripts. This module automatically upgrades existing
+integration to all DataMind scripts. This module automatically upgrades existing
 workflows with semantic search and intelligent agent coordination.
 
 Usage in any script:
@@ -11,7 +11,7 @@ Usage in any script:
 include("enhanced_workflow_foundation.jl")
 using .EnhancedWorkflow
 
-# Your existing DSAssist code automatically gets enhanced capabilities
+# Your existing DataMind code automatically gets enhanced capabilities
 ```
 """
 
@@ -20,11 +20,11 @@ module EnhancedWorkflow
 using Pkg
 Pkg.activate(".")
 
-# Load core DSAssist with enhancements
-include("../src/DSAssist.jl")
-using .DSAssist
+# Load core DataMind with enhancements
+include("../src/DataMind.jl")
+using .DataMind
 
-export DSAssist, create_enhanced_experiment, run_enhanced_workflow, 
+export DataMind, create_enhanced_experiment, run_enhanced_workflow, 
        get_semantic_insights, demonstrate_vector_capabilities,
        create_enhanced_controller, enhanced_workflow_banner
 

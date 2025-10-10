@@ -1,10 +1,10 @@
 #!/usr/bin/env julia
 
 """
-DSAssist: Credit Card Analytics with Comprehensive Visualizations
+DataMind: Credit Card Analytics with Comprehensive Visualizations
 ================================================================
 
-Demonstrates the enhanced plotting capabilities of DSAssist with:
+Demonstrates the enhanced plotting capabilities of DataMind with:
 - 📊 Interactive visualizations using Plots.jl ecosystem
 - 🎯 Business intelligence dashboards
 - 📈 Statistical model visualization
@@ -20,10 +20,10 @@ Features:
 using Pkg
 Pkg.activate(".")
 
-# Load the DSAssist system with plotting
-include("../src/DSAssist.jl")
-using .DSAssist
-using .DSAssist.JuliaNativeML
+# Load the DataMind system with plotting
+include("../src/DataMind.jl")
+using .DataMind
+using .DataMind.JuliaNativeML
 
 # Enhanced plotting ecosystem
 using Plots
@@ -374,7 +374,7 @@ total_roi = 2.3 + 0.89 + 1.7 + 0.45
 p12 = plot(
     xlims = (0, 10),
     ylims = (0, 10),
-    title = "DSAssist Credit Card Analytics Executive Summary",
+    title = "DataMind Credit Card Analytics Executive Summary",
     titlefontsize = 16,
     showaxis = false,
     grid = false,
@@ -403,7 +403,7 @@ annotate!(p12, 6, 5, text("• Implement early warning system for high-risk cust
 annotate!(p12, 6, 4.5, text("• Launch retention campaigns for inactive high-value customers", 12))
 annotate!(p12, 6, 4, text("• Deploy premium services for VIP customer segment", 12))
 
-annotate!(p12, 5, 2, text("🎉 DSAssist: Production-Ready Agentic Data Science", 16, :bold))
+annotate!(p12, 5, 2, text("🎉 DataMind: Production-Ready Agentic Data Science", 16, :bold))
 
 savefig(p12, "plots/executive_summary_infographic.png")
 println("📊 Executive Summary Infographic saved: plots/executive_summary_infographic.png")
@@ -416,7 +416,7 @@ comprehensive_dashboard = plot(
     p1, p4, p6, p7, p9, p11,
     layout = (3, 2),
     size = (1600, 1200),
-    plot_title = "DSAssist Credit Card Analytics: Comprehensive Dashboard"
+    plot_title = "DataMind Credit Card Analytics: Comprehensive Dashboard"
 )
 
 savefig(comprehensive_dashboard, "plots/comprehensive_analytics_dashboard.png")

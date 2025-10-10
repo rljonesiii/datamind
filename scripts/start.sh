@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# DSAssist Startup Script
-# This script sets up the environment and starts the DSAssist system
+# DataMind Startup Script
+# This script sets up the environment and starts the DataMind system
 
 set -e  # Exit on any error
 
-echo "🧪 Starting DSAssist: Agentic Data Science Workflows"
+echo "🧪 Starting DataMind: Agentic Data Science Workflows"
 echo "=================================================="
 
 # Get the script directory and project root
@@ -41,7 +41,7 @@ echo "📁 Project directory: $(pwd)"
 
 # Check if Project.toml exists
 if [ ! -f "Project.toml" ]; then
-    echo "❌ Project.toml not found. Are you in the DSAssist directory?"
+    echo "❌ Project.toml not found. Are you in the DataMind directory?"
     exit 1
 fi
 
@@ -66,7 +66,7 @@ julia --project=. scripts/diagnostic.jl
 
 if [ $? -eq 0 ]; then
     echo "✅ System check passed"
-    echo "🚀 Starting DSAssist..."
+    echo "🚀 Starting DataMind..."
     julia --project=. src/main.jl
 else
     echo "❌ System check failed. Please resolve issues before starting."

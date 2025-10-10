@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 """
-Enhanced DSAssist Workflow with Vector Database Integration
+Enhanced DataMind Workflow with Vector Database Integration
 
 Demonstrates the full agentic workflow using semantic search capabilities
 for improved agent coordination and knowledge discovery.
@@ -10,8 +10,8 @@ for improved agent coordination and knowledge discovery.
 using Pkg
 Pkg.activate(".")
 
-include("../src/DSAssist.jl")
-using .DSAssist
+include("../src/DataMind.jl")
+using .DataMind
 using Printf
 
 function main()

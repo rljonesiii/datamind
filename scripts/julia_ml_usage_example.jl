@@ -21,9 +21,9 @@ using CSV
 using Statistics
 using StatsBase
 
-# Import DSAssist modules
-include("../src/DSAssist.jl")
-using .DSAssist
+# Import DataMind modules
+include("../src/DataMind.jl")
+using .DataMind
 
 function main()
     println("🚀 JULIA NATIVE ML USAGE EXAMPLE")
@@ -45,7 +45,7 @@ function main()
     try
         # Time the data loading
         loading_time = @elapsed begin
-            df = DSAssist.JuliaNativeML.load_and_prepare_data(data_path)
+            df = DataMind.JuliaNativeML.load_and_prepare_data(data_path)
         end
         
         println("✅ Data loaded successfully!")
@@ -86,7 +86,7 @@ function main()
         
         # Time the ML analysis
         analysis_time = @elapsed begin
-            results = DSAssist.JuliaNativeML.compare_ensemble_methods(data_path, target_col, feature_cols)
+            results = DataMind.JuliaNativeML.compare_ensemble_methods(data_path, target_col, feature_cols)
         end
         
         println("\n⚡ ML Analysis completed!")
@@ -112,12 +112,12 @@ function main()
             println("\n🔧 Testing individual components:")
             
             # Test data loading only
-            df = DSAssist.JuliaNativeML.load_and_prepare_data(data_path)
+            df = DataMind.JuliaNativeML.load_and_prepare_data(data_path)
             println("  ✅ Data loading works")
             
             # Test encoding
             if "category" in names(df)
-                encoded_df, encoders = DSAssist.JuliaNativeML.encode_categorical_features(df, ["category"])
+                encoded_df, encoders = DataMind.JuliaNativeML.encode_categorical_features(df, ["category"])
                 println("  ✅ Categorical encoding works")
             end
             
@@ -126,7 +126,7 @@ function main()
             if all(col in names(df) for col in feature_cols_numeric)
                 X = df[!, feature_cols_numeric]
                 y = df[!, "price"]
-                X_train, X_test, y_train, y_test = DSAssist.JuliaNativeML.train_test_split_julia(X, y)
+                X_train, X_test, y_train, y_test = DataMind.JuliaNativeML.train_test_split_julia(X, y)
                 println("  ✅ Train/test split works: $(length(y_train)) train, $(length(y_test)) test")
             end
             
@@ -142,8 +142,8 @@ function main()
     
     # Example 3: Feature correlation analysis
     try
-        df = DSAssist.JuliaNativeML.load_and_prepare_data(data_path)
-        correlations = DSAssist.JuliaNativeML.feature_correlation_analysis(df, "price")
+        df = DataMind.JuliaNativeML.load_and_prepare_data(data_path)
+        correlations = DataMind.JuliaNativeML.feature_correlation_analysis(df, "price")
         
         println("\n✅ Feature correlation analysis completed!")
         
