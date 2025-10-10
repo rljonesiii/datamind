@@ -8,6 +8,9 @@
 - **Plotting & Visualization**:
   - [Plotting Capabilities](plotting_capabilities.md) - Interactive plotting with Pluto.jl and visualization features
   - [Julia ML Quick Reference](julia_ml_quick_reference.md) - ML operations and plotting reference
+- **Weather Data Analysis**:
+  - [Weather Analysis Capabilities](weather_analysis_capabilities.md) - Comprehensive meteorological analysis guide
+  - [Weather Analysis Usage Guide](weather_analysis_usage_guide.md) - Quick start guide for weather scripts
 - **Knowledge Graph**:
   - [Knowledge Graph Summary](knowledge_graph_summary.md) - Quick overview of why and how
   - [Knowledge Graph Usage](knowledge_graph_usage.md) - Comprehensive guide to learning and patterns
