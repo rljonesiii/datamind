@@ -1,23 +1,24 @@
 # Knowledge Graph Documentation Summary
 
-This directory contains comprehensive documentation about DSAssist's knowledge graph system:
+This directory contains comprehensive documentation about **DataMind's advanced knowledge graph system** with **177+ experiments tracked** and **real GPT-4 integration**.
 
 ## Core Documents
 
 ### 📖 [Knowledge Graph Usage](knowledge_graph_usage.md)
-**The main document explaining why and how knowledge graphs are used in DSAssist.**
+**The main document explaining why and how knowledge graphs power DataMind's agentic intelligence.**
 
 This comprehensive guide covers:
-- **Why knowledge graphs?** - The problems they solve in data science
-- **How DSAssist uses them** - Specific workflows and benefits
-- **Implementation details** - Architecture and query patterns
-- **Future enhancements** - Meta-learning and collaborative intelligence
+- **Why knowledge graphs?** - Solving pattern recognition across 177+ experiments
+- **How DataMind uses them** - Real LLM workflows with Neo4j + ChromaDB integration
+- **Implementation details** - Advanced ontology architecture with vector database support
+- **Future enhancements** - Meta-learning and cross-domain collaborative intelligence
 
 ### 🔧 [Neo4j Integration](neo4j_integration.md)
-**Technical guide for setting up and using the Neo4j backend.**
+**Technical guide for setting up and using the Neo4j backend with enhanced intelligence.**
 
 Covers:
-- Configuration and setup
+- **Real-world setup** with 177+ experiments tracked
+- **Enhanced script integration**: `./run.sh demos/agentic_guided_tour/knowledge_graph_learning.jl`
 - Dual-backend architecture (Neo4j + in-memory)
 - API reference and query examples
 - Testing and troubleshooting

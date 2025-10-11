@@ -1,33 +1,40 @@
-# ChromaDB-Julia Quick Reference Guide
+# ChromaDB-DataMind Quick Reference Guide
 
 ## 🚀 Quick Start
 
-### **Installation**
+### **Installation & Setup**
 ```bash
-# Install ChromaDB
+# Install ChromaDB for vector database functionality
 pip install chromadb
 
-# Test integration
-julia --project=. -e "include(\"src/DSAssist.jl\"); using .DSAssist; println(\"✓ Ready\")"
+# Test DataMind integration with enhanced script runner
+cd scripts/
+./run.sh demos/agentic_guided_tour/knowledge_graph_learning.jl
+
+# Or test integration directly
+julia --project=. -e "using DataMind; println(\"✓ DataMind Ready with Vector Database\")"
 ```
 
-### **Basic Usage**
+### **Basic Usage with Enhanced Intelligence**
 ```julia
-# Create enhanced knowledge graph
+# Create enhanced knowledge graph with vector database
 ekg = initialize_vector_knowledge_graph(KnowledgeGraph())
 
-# Embed research question
-embed_research_question(ekg, "What is customer churn?", "exp_001")
+# Real experiment embedding with GPT-4 intelligence
+embed_research_question(ekg, "What drives customer satisfaction in e-commerce?", "exp_177")
 
-# Semantic search
-results = semantic_similarity_search(ekg, "customer behavior analysis")
+# Semantic search across 177+ tracked experiments
+results = semantic_similarity_search(ekg, "customer behavior patterns")
+
+# Cross-domain learning
+weather_insights = apply_patterns_to_domain(ekg, "weather analysis", "financial modeling")
 ```
 
-## 🔧 Key Functions
+## 🔧 Enhanced Functions
 
-### **Embedding Generation**
+### **Intelligent Embedding Generation**
 ```julia
-# OpenAI embeddings (requires API key)
+# Real OpenAI embeddings with API integration
 embedding = get_text_embedding("text", model="openai")
 
 # Simple embeddings (pure Julia)

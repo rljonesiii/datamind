@@ -1,17 +1,12 @@
 # Scripts Directory
 
-This directory contains analysis scripts and utility tools for DSAssist.
+This directory contains analysis scripts and utility tools for DataMind.
 
-## 🚀 Analysis Scripts (User-Facing)
+## Recommended Entry Points
 
-### `dsassist_direct.jl` ⭐ **RECOMMENDED**
-- **Purpose**: Streamlined analysis for any research question and CSV data
-- **Usage**: `julia --project=. scripts/dsassist_direct.jl "Your research question"`
-- **Features**: 
-  - Real GPT-4 analysis (30-60 seconds)
-  - Works with any CSV file
-  - Comprehensive insights and recommendations
-  - No iteration limits or complex setup
+🚀 **New Users**: Start with `direct_analysis.jl` - it provides guided DataMind intelligence for any research question
+
+🧪 **Explore Features**: Try demos in `demos/agentic_guided_tour/` to experience different DataMind capabilities
 
 ### `product_sales_insights.jl`
 - **Purpose**: Advanced multi-agent analysis with 4 specialized agents
@@ -49,7 +44,7 @@ This directory contains analysis scripts and utility tools for DSAssist.
 ### Quick Analysis (Recommended)
 ```bash
 # Interactive analysis - most common use case
-julia --project=. scripts/dsassist_direct.jl "What are the revenue optimization opportunities?"
+julia --project=. scripts/direct_analysis.jl "What are the revenue optimization opportunities?"
 
 # Follow prompts to specify CSV file
 # Get comprehensive GPT-4 analysis in under 60 seconds
@@ -95,14 +90,14 @@ echo "OPENAI_API_KEY=your_api_key_here" > .env
 
 ### API Behavior
 - **Default**: Real GPT-4 API calls
-- **Debug Mode**: Set `DSASSIST_USE_MOCK_API=true` for testing without API costs
+- **Debug Mode**: Set `DATAMIND_USE_MOCK_API=true` for testing without API costs
 - **No API Key**: Automatically falls back to mock responses with warnings
 
 ## 🎯 Script Selection Guide
 
 | Use Case | Script | Best For |
 |----------|--------|----------|
-| **Quick insights on any data** | `dsassist_direct.jl` | Any research question, any CSV |
+| **Quick insights on any data** | `direct_analysis.jl` | Any research question, any CSV |
 | **Deep business analysis** | `product_sales_insights.jl` | Product/sales data, strategic decisions |
 | **Autonomous exploration** | `start.sh` | Complex hypotheses, iterative discovery |
 | **System testing** | `diagnostic.jl` | Development, troubleshooting |

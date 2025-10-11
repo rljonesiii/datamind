@@ -66,7 +66,20 @@ function build_planning_context(experiment::Experiment)
         push!(context_parts, "Previous attempts:")
         for (i, hist) in enumerate(experiment.history)
             status = hist["success"] ? "✅" : "❌"
-            push!(context_parts, "  $i. $status $(get(hist, "summary", "No summary"))")
+            summary = get(hist, "summary", "No summary")
+            push!(context_parts, "  $i. $status $summary")
+            
+            # Add specific error patterns for failed attempts
+            if !hist["success"] && haskey(hist, "error")
+                error_msg = hist["error"]
+                if contains(error_msg, "iteration is deliberately unsupported")
+                    push!(context_parts, "    ⚠️  Previous error: DataFrame iteration issue - use eachrow(df)")
+                elseif contains(error_msg, "BoundsError")
+                    push!(context_parts, "    ⚠️  Previous error: Column access issue - use df[!, :column]")
+                elseif contains(error_msg, "UndefVarError")
+                    push!(context_parts, "    ⚠️  Previous error: Undefined variable - check imports and definitions")
+                end
+            end
         end
     end
     

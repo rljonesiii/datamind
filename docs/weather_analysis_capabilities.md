@@ -1,22 +1,29 @@
-# 🌤️ DSAssist Weather Data Analysis Capabilities
+# 🌤️ DataMind Weather Data Analysis Capabilities
 
 ## 🎯 Overview
 
-DSAssist includes comprehensive weather data analysis capabilities demonstrating the agentic workflow system's versatility across different domains. The weather analysis module showcases meteorological data science through automated planning, code generation, execution, and evaluation cycles.
+DataMind includes comprehensive weather data analysis capabilities demonstrating the **agentic workflow system's versatility** across scientific domains. The weather analysis module showcases meteorological data science through **real GPT-4 powered** planning, code generation, execution, and evaluation cycles with **Julia native ML optimization**.
 
-## 📁 Weather Analysis Scripts
+## 📁 Enhanced Weather Analysis Scripts
 
-### 🤖 **Agentic Weather Analysis (`scripts/weather_agentic_analysis.jl`)**
+### 🤖 **Agentic Weather Analysis** 
 
-A complete agentic workflow demonstration following the credit card analysis pattern, showcasing how DSAssist would handle meteorological research questions through automated agent coordination.
+Access via enhanced script runner:
+```bash
+cd scripts/
+./run.sh demos/agentic_guided_tour/weather_agentic_analysis.jl     # Full agentic workflow
+./run.sh demos/analytics_showcase/weather_analysis_demo.jl         # Direct analysis demo
+```
 
-#### **Five-Step Agentic Tour:**
+A complete agentic workflow demonstration with **real LLM intelligence**, showcasing how DataMind handles meteorological research through automated agent coordination and **Julia native performance**.
+
+#### **Enhanced Five-Step Agentic Tour:**
 
 1. **🌡️ Climate Data Discovery & Overview**
-   - Natural language research question processing
-   - Automated data quality assessment
-   - Climate zone identification across cities
-   - Weather pattern baseline establishment
+   - **Real GPT-4** natural language research question processing
+   - **Julia native** automated data quality assessment (5-100x faster)
+   - **Intelligent** climate zone identification across 3 cities (NY, LA, Chicago)
+   - **Statistical** weather pattern baseline with 15 observations
 
 2. **📊 Temperature Prediction & Pattern Analysis**
    - ML model development for temperature forecasting

@@ -1,31 +1,43 @@
-# 📊 DSAssist Plotting & Visualization Capabilities
+# 📊 DataMind Plotting & Visualization Capabilities
 
 ## 🎯 Overview
 
-DSAssist now includes comprehensive plotting and visualization capabilities, seamlessly integrated with the Julia native ML ecosystem for **5-100x faster** data science workflows.
+DataMind includes comprehensive plotting and visualization capabilities, seamlessly integrated with the **Julia native ML ecosystem** for 5-100x faster data science workflows and **real agentic intelligence** powered by GPT-4.
 
 ## ✨ Features
 
 ### 🎨 **Comprehensive Visualization Suite**
-- **Risk Distribution Charts**: Customer risk profiling and segmentation
-- **Value Analysis Plots**: Customer lifetime value vs risk matrices  
-- **ML Performance Visualization**: Model accuracy, cross-validation, feature importance
-- **Business Intelligence Dashboards**: ROI analysis and strategic insights
-- **Customer Segmentation**: Interactive segment analysis and profiling
+- **Risk Distribution Charts**: Customer risk profiling and segmentation analysis
+- **Value Analysis Plots**: Customer lifetime value vs risk correlation matrices  
+- **ML Performance Visualization**: Model accuracy, cross-validation metrics, feature importance
+- **Business Intelligence Dashboards**: ROI analysis and strategic insights with executive summaries
+- **Customer Segmentation**: Interactive segment analysis and behavior profiling
+- **Weather Pattern Analysis**: Climate visualization and meteorological insights
+- **E-commerce Analytics**: Sales forecasting and product performance visualization
 
 ### 🚀 **Technical Excellence**
-- **Julia Native Performance**: 5-100x faster than Python/matplotlib
-- **Multiple Backends**: GR (fast), PlotlyJS (interactive), PythonPlot (compatibility)
-- **Production Ready**: PNG/PDF export for presentations and reports
-- **Interactive Capability**: Pluto.jl notebook integration for reactive dashboards
+- **Julia Native Performance**: 5-100x faster than Python/matplotlib equivalents
+- **Multiple Backends**: GR (fast rendering), PlotlyJS (interactive), export-ready formats
+- **Production Ready**: PNG/PDF export optimized for presentations and reports
+- **Interactive Dashboards**: Pluto.jl notebook integration for reactive, real-time dashboards
+- **Font Compatibility**: No emoji rendering issues, professional presentation quality
+
+### �️ **Enhanced Script Integration**
+All visualizations accessible via the enhanced script runner:
+```bash
+cd scripts/
+./run.sh demos/analytics_showcase/credit_card_plotting_demo.jl      # Credit card visualizations
+./run.sh demos/analytics_showcase/credit_card_visualizations.jl     # Advanced plotting suite
+./run.sh demos/agentic_guided_tour/weather_agentic_analysis.jl      # Weather visualizations
+```
 
 ## 📁 Generated Visualizations
 
-### Current Examples (from Credit Card Analytics):
+### Credit Card Analytics Suite:
 
 1. **📊 Risk Distribution** (`plots/risk_distribution.png`)
-   - Customer risk categories with percentages
-   - 22.1% high-risk customers identified
+   - Customer risk categories with statistical percentages
+   - Advanced risk profiling with 22.1% high-risk identification
 
 2. **💎 Value vs Risk Analysis** (`plots/value_risk_analysis.png`)
    - Scatter plot showing CLV vs Credit Risk Score

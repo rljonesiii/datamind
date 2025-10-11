@@ -40,7 +40,7 @@ mutable struct ChromaVectorDB <: VectorDatabase
         end
         
         # Create persistent storage directory
-        persist_path = joinpath(homedir(), ".dsassist", "chromadb")
+        persist_path = joinpath(homedir(), ".datamind", "chromadb")
         if !isdir(persist_path)
             mkpath(persist_path)
             @info "Created ChromaDB storage directory: $persist_path"
@@ -345,7 +345,15 @@ function enhanced_query_insights(ekg::EnhancedKnowledgeGraph, research_question:
     if ekg.neo4j_backend !== nothing
         try
             # Get traditional graph-based insights
-            graph_insights = query_insights(ekg.in_memory_kg, research_question)
+            insights_data = query_insights(ekg.in_memory_kg, research_question)
+            
+            # Extract similar experiments array from the insights dictionary
+            graph_insights = get(insights_data, "similar_experiments", [])
+            
+            # Ensure graph_insights is an array
+            if !isa(graph_insights, Vector)
+                graph_insights = []
+            end
             
             # Merge and deduplicate results
             for result in semantic_results

@@ -64,6 +64,22 @@ function evaluate_results(agent::EvaluationAgent, execution_result::ExecutionRes
     3. How confident are you in the results (0.0-1.0)?
     4. What should be the next steps?
     5. Should we stop experimenting (if we have enough evidence)?
+    6. If there were errors, what specific improvements should be made to the code?
+    
+    Common Julia DataFrame issues to watch for:
+    - Use eachrow(df) not for row in df
+    - Use df[!, :column] for column access
+    - Use select() for subsetting columns
+    - Check for proper numeric type filtering
+    - NEVER use @load macro - use explicit imports
+    - Always check column names with names(df) first
+    - Load data with: df = CSV.read(data_path("filename.csv"), DataFrame)
+    
+    If code failed, provide SPECIFIC fixes:
+    - "Change 'for row in df' to 'for row in eachrow(df)'"
+    - "Add data loading: df = CSV.read(data_path(\"cc_data.csv\"), DataFrame)"
+    - "Replace @load with explicit import: using GLM"
+    - "Check column exists: if \"BALANCE\" in names(df)"
     
     Respond in JSON format:
     {
@@ -73,7 +89,8 @@ function evaluate_results(agent::EvaluationAgent, execution_result::ExecutionRes
         "summary": "Brief summary of findings",
         "next_actions": ["action1", "action2", ...],
         "should_stop": true/false,
-        "insights": ["insight1", "insight2", ...]
+        "insights": ["insight1", "insight2", ...],
+        "code_improvements": ["specific fixes for any syntax/logic errors"]
     }
     """
     

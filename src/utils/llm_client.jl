@@ -33,7 +33,7 @@ Makes an API call to the configured LLM provider.
 """
 function call_llm(client::LLMClient, prompt::String)
     # Check if user wants to force mock responses (for debugging)
-    use_mock_api = get(ENV, "DSASSIST_USE_MOCK_API", "false") == "true"
+    use_mock_api = get(ENV, "DATAMIND_USE_MOCK_API", "false") == "true"
     
     if isempty(client.api_key)
         @warn "No API key found for $(client.config.llm_model). Using mock response."
@@ -41,7 +41,7 @@ function call_llm(client::LLMClient, prompt::String)
     end
     
     if use_mock_api
-        @info "Using mock response for debugging (DSASSIST_USE_MOCK_API=true set)."
+        @info "Using mock response for debugging (DATAMIND_USE_MOCK_API=true set)."
         return generate_mock_response(client.config.name, prompt)
     end
     

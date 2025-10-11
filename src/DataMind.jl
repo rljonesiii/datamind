@@ -1,5 +1,11 @@
 module DataMind
 
+# Import environment utilities
+include("utils/env_utils.jl")
+
+# Load environment on module initialization - look in project root
+load_env_file(joinpath(dirname(@__DIR__), ".env"))
+
 using HTTP, JSON3, DataFrames, YAML
 using CSV, Statistics
 using Dates, UUIDs, Random
@@ -22,6 +28,29 @@ include("evaluation/evaluator.jl")
 include("agents/planning_agent.jl")
 include("agents/codegen_agent.jl")
 include("controllers/meta_controller.jl")
+
+# Core experiment functions
+"""
+    create_experiment(research_question::String, knowledge_graph::Union{KnowledgeGraph, EnhancedKnowledgeGraph})
+
+Creates a new experiment with the given research question and knowledge graph.
+"""
+function create_experiment(research_question::String, knowledge_graph::Union{KnowledgeGraph, EnhancedKnowledgeGraph})
+    experiment = Experiment(research_question)
+    experiment.context["knowledge_graph"] = knowledge_graph
+    return experiment
+end
+
+"""
+    run_autonomous_exploration(experiment::Experiment; max_iterations::Int=10)
+
+Runs autonomous exploration on the given experiment.
+"""
+function run_autonomous_exploration(experiment::Experiment; max_iterations::Int=10)
+    config = YAML.load_file("config/agents.yaml")
+    controller = MetaController(experiment, config)
+    return run_experiment_cycle(controller, max_iterations)
+end
 
 # Julia Native ML module
 include("ml/julia_native_ml.jl")

@@ -237,55 +237,6 @@ function train_test_split_julia(X::DataFrame, y::Vector, test_size::Float64=0.3;
 end
 
 """
-Linear regression analysis using GLM.jl (much faster than sklearn)
-"""
-function linear_regression_analysis(X_train::DataFrame, y_train::Vector, X_test::DataFrame, y_test::Vector)
-    println("📈 Linear Regression Analysis (Julia GLM):")
-    
-    # Create formula dynamically
-    feature_names = names(X_train)
-    formula_str = "y ~ " * join(feature_names, " + ")
-    formula = eval(Meta.parse("@formula($formula_str)"))
-    
-    # Prepare training data
-    train_data = copy(X_train)
-    train_data.y = y_train
-    
-    # Fit linear model using GLM.jl (faster than sklearn)
-    model = lm(formula, train_data)
-    
-    # Make predictions
-    test_data = copy(X_test)
-    predictions = predict(model, test_data)
-    
-    # Calculate metrics
-    mse = mean((predictions .- y_test).^2)
-    rmse = sqrt(mse)
-    r2 = 1 - sum((y_test .- predictions).^2) / sum((y_test .- mean(y_test)).^2)
-    mae = mean(abs.(predictions .- y_test))
-    
-    println("  � RMSE: $(round(rmse, digits=2))")
-    println("  � R² Score: $(round(r2, digits=3))")
-    println("  📊 MAE: $(round(mae, digits=2))")
-    
-    # Model summary
-    println("  📋 Model Coefficients:")
-    for (i, coef_name) in enumerate(coefnames(model))
-        coef_val = coef(model)[i]
-        println("    $coef_name: $(round(coef_val, digits=4))")
-    end
-    
-    return Dict(
-        "model" => model,
-        "predictions" => predictions,
-        "rmse" => rmse,
-        "r2" => r2,
-        "mae" => mae,
-        "coefficients" => Dict(coefnames(model)[i] => coef(model)[i] for i in 1:length(coef(model)))
-    )
-end
-
-"""
 Simple ensemble using multiple linear models (bootstrap aggregating)
 """
 function simple_ensemble_analysis(X_train::DataFrame, y_train::Vector, X_test::DataFrame, y_test::Vector; n_models::Int=10)

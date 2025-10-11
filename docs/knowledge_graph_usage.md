@@ -1,6 +1,6 @@
-# Knowledge Graph in DSAssist: Why and How
+# Knowledge Graph in DataMind: Why and How
 
-The knowledge graph is a central component of DSAssist that enables the system to learn from past experiments, identify patterns, and make increasingly intelligent decisions. This document explains why knowledge graphs are essential for autonomous data science and how DSAssist implements and uses them.
+The knowledge graph is a central component of DataMind that enables the system to learn from past experiments, identify patterns, and make increasingly intelligent decisions. This document explains why knowledge graphs are essential for autonomous data science and how DataMind implements and uses them.
 
 ## Why Knowledge Graphs for Data Science?
 
@@ -22,11 +22,11 @@ A knowledge graph transforms data science from isolated experiments into a conne
 - **Failure Learning**: Remember what doesn't work and why
 - **Context Awareness**: Understand how similar problems have been solved before
 
-## How DSAssist Uses Knowledge Graphs
+## How DataMind Uses Knowledge Graphs
 
 ### Core Concept: The Scientist's Mental Model
 
-DSAssist's knowledge graph mirrors how expert data scientists think:
+DataMind's knowledge graph mirrors how expert data scientists think:
 
 ```
 "This correlation analysis reminds me of the temperature-sales project 
@@ -43,7 +43,7 @@ The knowledge graph captures this institutional memory and makes it available to
 Every research question becomes a node in the graph:
 
 ```julia
-DSAssistExperiment {
+DataMindExperiment {
     id: "uuid-string"
     research_question: "Analyze correlation between temperature and sales"
     created_at: DateTime
@@ -56,7 +56,7 @@ DSAssistExperiment {
 Each attempt to solve an experiment creates an iteration:
 
 ```julia
-DSAssistIteration {
+DataMindIteration {
     experiment_id: "parent-experiment-uuid"
     iteration: 1
     success: true
@@ -76,7 +76,7 @@ DSAssistIteration {
 Connections between experiments capture learning patterns:
 
 ```cypher
-(exp1:DSAssistExperiment)-[:SIMILAR_TO {similarity: 0.85}]->(exp2:DSAssistExperiment)
+(exp1:DataMindExperiment)-[:SIMILAR_TO {similarity: 0.85}]->(exp2:DataMindExperiment)
 (exp1)-[:LEADS_TO]->(exp2)  // When one experiment inspires another
 (exp1)-[:IMPROVED_BY]->(exp2)  // When an approach gets refined
 ```
@@ -310,7 +310,7 @@ insights = query_insights(kg, "experiment progression patterns")
 
 ### Dual Backend System
 
-DSAssist implements a dual-backend knowledge graph system:
+DataMind implements a dual-backend knowledge graph system:
 
 ```julia
 struct KnowledgeGraph
@@ -398,7 +398,7 @@ Transfer knowledge between different types of problems:
 
 ### 3. Collaborative Intelligence
 
-Enable multiple DSAssist instances to share knowledge:
+Enable multiple DataMind instances to share knowledge:
 - Distributed knowledge graphs
 - Federated learning of patterns
 - Community-driven best practices
@@ -412,7 +412,7 @@ Move beyond correlation to causation:
 
 ## Conclusion
 
-The knowledge graph is what transforms DSAssist from a collection of AI agents into a continuously learning data science system. By capturing, connecting, and querying the accumulated wisdom of experiments, it enables each iteration to be smarter than the last.
+The knowledge graph is what transforms DataMind from a collection of AI agents into a continuously learning data science system. By capturing, connecting, and querying the accumulated wisdom of experiments, it enables each iteration to be smarter than the last.
 
 This creates a virtuous cycle: better experiments → better knowledge → even better experiments → deeper insights → more effective automation → transformative data science capabilities.
 

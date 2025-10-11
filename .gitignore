@@ -16,6 +16,9 @@ experiments/
 *.svg
 *.html
 
+# Development directories
+scripts/.development
+
 # Logs
 *.log
 
