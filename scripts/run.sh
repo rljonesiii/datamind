@@ -9,11 +9,26 @@
 # Change to project root directory (parent of scripts/)
 cd "$(dirname "$0")/.."
 
+# Activate Python virtual environment if it exists
+if [ -d ".venv" ]; then
+    if [ -f ".venv/bin/activate" ]; then
+        echo "🐍 Activating Python virtual environment (.venv)..."
+        source .venv/bin/activate
+        export PYCALL_JL_RUNTIME_PYTHON="$(which python)"
+    elif [ -f ".venv/Scripts/activate" ]; then
+        # Windows path
+        echo "🐍 Activating Python virtual environment (.venv)..."
+        source .venv/Scripts/activate
+        export PYCALL_JL_RUNTIME_PYTHON="$(which python)"
+    fi
+fi
+
 # Check if a script path was provided or if help is requested
 if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "🚀 DataMind Julia Script Runner"
     echo "================================"
     echo "📍 Run from: scripts/ directory"
+    echo "🐍 Automatically activates Python .venv for ChromaDB"
     echo ""
     echo "Usage: ./run.sh <script_path>"
     echo ""
@@ -83,3 +98,8 @@ else
     echo "❌ Script failed with exit code: $EXIT_CODE"
 fi
 echo "🚀 DataMind execution finished"
+
+# Note about virtual environment 
+if [ -n "$VIRTUAL_ENV" ]; then
+    echo "🐍 Python virtual environment remains active for this session"
+fi

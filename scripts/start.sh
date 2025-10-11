@@ -39,6 +39,26 @@ cd "$PROJECT_DIR"
 
 echo "📁 Project directory: $(pwd)"
 
+# Activate Python virtual environment if it exists
+if [ -d ".venv" ]; then
+    if [ -f ".venv/bin/activate" ]; then
+        echo "🐍 Activating Python virtual environment (.venv)..."
+        source .venv/bin/activate
+        export PYCALL_JL_RUNTIME_PYTHON="$(which python)"
+        echo "✅ Python virtual environment activated"
+    elif [ -f ".venv/Scripts/activate" ]; then
+        # Windows path
+        echo "🐍 Activating Python virtual environment (.venv)..."
+        source .venv/Scripts/activate
+        export PYCALL_JL_RUNTIME_PYTHON="$(which python)"
+        echo "✅ Python virtual environment activated"
+    fi
+else
+    echo "⚠️  No Python virtual environment (.venv) found"
+    echo "   ChromaDB features may not be available"
+    echo "   Run ./install.sh to set up the environment"
+fi
+
 # Check if Project.toml exists
 if [ ! -f "Project.toml" ]; then
     echo "❌ Project.toml not found. Are you in the DataMind directory?"

@@ -211,6 +211,8 @@ julia --project=. test/integration_test.jl
 - ✅ **Smart Path Resolution**: Automatically handles project root navigation
 - ✅ **Script Discovery**: Lists all available demo, utility, and test scripts
 - ✅ **Environment Integration**: Automatically activates Julia project environment
+- ✅ **Python Virtual Environment**: Automatically activates `.venv` for ChromaDB access
+- ✅ **PyCall Configuration**: Sets up Python interpreter for seamless Julia-Python integration
 - ✅ **Clear Status Reporting**: Shows execution progress and completion status
 
 ### 1. 🚀 Direct Analysis (Recommended)
